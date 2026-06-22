@@ -1,0 +1,11 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "crons": [
+    {
+      "path": "/api/cron/daily-concept",
+      "schedule": "0 6 * * *"
+    }
+  ]
+}

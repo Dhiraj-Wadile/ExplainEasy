@@ -1,0 +1,490 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+  USER
+}
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String?
+  email         String   @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  role          Role     @default(USER)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  otps              Otp[]
+  accounts          Account[]
+  sessions          Session[]
+  bookmarks         Bookmark[]
+  favorites         Favorite[]
+  notes             Note[]
+  quizResults       QuizResult[]
+  flashcardResults  FlashcardResult[]
+  learningStreaks   LearningStreak[]
+  achievements      Achievement[]
+  recentlyViewed    RecentlyViewed[]
+  createdConcepts   Concept[]
+
+  @@index([email])
+  @@index([role])
+  @@map("users")
+}
+
+model Otp {
+  id        String   @id @default(cuid())
+  email     String
+  otp       String
+  type      OtpType  @default(VERIFY_EMAIL)
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+  userId String?
+
+  @@index([email, otp])
+  @@index([email, type, used])
+  @@index([expiresAt])
+  @@index([userId])
+  @@map("otps")
+}
+
+enum OtpType {
+  VERIFY_EMAIL
+  PASSWORD_RESET
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expires])
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  icon        String
+  color       String
+  gradient    String
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  concepts    Concept[]
+  quizResults QuizResult[]
+  videos      Video[]
+
+  @@index([slug])
+  @@index([featured])
+  @@map("categories")
+}
+
+model Concept {
+  id                String     @id @default(cuid())
+  slug              String     @unique
+  name              String
+  categoryId        String
+  subcategory       String?
+  definition        String     @db.Text
+  simpleExplanation String     @db.Text
+  example           String?    @db.Text
+  whyItMatters      String?    @db.Text
+  formula           String?
+  formulaDescription String?
+  commonMistakes    String?    @db.Text
+  sharkTankExample  String?    @db.Text
+  realCompanyExample String?   @db.Text
+  visualDiagram     String?    @db.Text
+  quickSummary      String?    @db.Text
+  icon              String     @default("BookOpen")
+  difficulty        Difficulty @default(BEGINNER)
+  featured          Boolean    @default(false)
+  popular           Boolean    @default(false)
+  readTime          Int        @default(3)
+  published         Boolean    @default(false)
+  createdById       String?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  category        Category          @relation(fields: [categoryId], references: [id])
+  createdBy       User?             @relation(fields: [createdById], references: [id])
+  relatedTerms    RelatedTerm[]     @relation("conceptRelations")
+  relatedTo       RelatedTerm[]     @relation("relatedRelations")
+  interviewQuestions InterviewQuestion[]
+  faqs            FAQ[]
+  references      Reference[]
+  tags            Tag[]
+  bookmarks       Bookmark[]
+  favorites       Favorite[]
+  notes           Note[]
+  quizQuestions   QuizQuestion[]
+  flashcards      Flashcard[]
+  dailyConcepts   DailyConcept[]
+  recentlyViewed  RecentlyViewed[]
+  videos          Video[]
+
+  @@index([slug])
+  @@index([categoryId])
+  @@index([difficulty])
+  @@index([featured, popular])
+  @@index([createdById])
+  @@index([published])
+  @@map("concepts")
+}
+
+model RelatedTerm {
+  id        String @id @default(cuid())
+  conceptId String
+  relatedId String
+
+  concept Concept @relation(name: "conceptRelations", fields: [conceptId], references: [id], onDelete: Cascade)
+  related Concept @relation(name: "relatedRelations", fields: [relatedId], references: [id], onDelete: Cascade)
+
+  @@unique([conceptId, relatedId])
+  @@index([conceptId])
+  @@index([relatedId])
+  @@map("related_terms")
+}
+
+model InterviewQuestion {
+  id        String @id @default(cuid())
+  conceptId String
+  question  String @db.Text
+
+  concept Concept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@index([conceptId])
+  @@map("interview_questions")
+}
+
+model FAQ {
+  id        String @id @default(cuid())
+  conceptId String
+  question  String @db.Text
+  answer    String @db.Text
+
+  concept Concept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@index([conceptId])
+  @@map("faqs")
+}
+
+model Reference {
+  id        String @id @default(cuid())
+  conceptId String
+  text      String @db.Text
+
+  concept Concept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@index([conceptId])
+  @@map("references")
+}
+
+model Tag {
+  id        String     @id @default(cuid())
+  conceptId String
+  name      String
+
+  concept Concept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@index([conceptId])
+  @@index([name])
+  @@map("tags")
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  conceptId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  concept Concept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, conceptId])
+  @@index([userId])
+  @@index([conceptId])
+  @@map("bookmarks")
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  conceptId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  concept Concept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, conceptId])
+  @@index([userId])
+  @@index([conceptId])
+  @@map("favorites")
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  userId    String
+  conceptId String
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  concept Concept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([conceptId])
+  @@map("notes")
+}
+
+model Flashcard {
+  id          String @id @default(cuid())
+  conceptId   String
+  question    String @db.Text
+  answer      String @db.Text
+  difficulty  Difficulty @default(BEGINNER)
+
+  concept        Concept           @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+  flashcardResults FlashcardResult[]
+
+  @@index([conceptId])
+  @@index([difficulty])
+  @@map("flashcards")
+}
+
+model FlashcardResult {
+  id          String   @id @default(cuid())
+  userId      String
+  flashcardId String
+  correct     Boolean
+  reviewedAt  DateTime @default(now())
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  flashcard Flashcard @relation(fields: [flashcardId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([flashcardId])
+  @@map("flashcard_results")
+}
+
+model QuizQuestion {
+  id            String   @id @default(cuid())
+  conceptId     String
+  question      String   @db.Text
+  options       String[] @db.Text
+  correctAnswer Int
+  explanation   String?  @db.Text
+  difficulty    Difficulty @default(BEGINNER)
+
+  concept Concept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@index([conceptId])
+  @@index([difficulty])
+  @@map("quiz_questions")
+}
+
+model QuizResult {
+  id              String   @id @default(cuid())
+  userId          String
+  categoryId      String?
+  score           Int
+  totalQuestions  Int
+  completedAt     DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category Category? @relation(fields: [categoryId], references: [id])
+
+  @@index([userId])
+  @@index([categoryId])
+  @@map("quiz_results")
+}
+
+model LearningStreak {
+  id        String   @id @default(cuid())
+  userId    String
+  date      DateTime
+  count     Int      @default(1)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@map("learning_streaks")
+}
+
+model Achievement {
+  id          String   @id @default(cuid())
+  userId      String
+  type        String
+  title       String
+  description String?
+  earnedAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("achievements")
+}
+
+model RecentlyViewed {
+  id        String   @id @default(cuid())
+  userId    String
+  conceptId String
+  viewedAt  DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  concept Concept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, conceptId])
+  @@index([userId])
+  @@index([conceptId])
+  @@index([viewedAt])
+  @@map("recently_viewed")
+}
+
+model DailyConcept {
+  id        String   @id @default(cuid())
+  conceptId String
+  date      DateTime
+  type      String   @default("daily")
+  createdAt DateTime @default(now())
+
+  concept Concept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@unique([date, type])
+  @@index([conceptId])
+  @@index([date])
+  @@map("daily_concepts")
+}
+
+model Video {
+  id          String   @id @default(cuid())
+  title       String
+  description String?  @db.Text
+  youtubeId   String
+  categoryId  String?
+  conceptId   String?
+  thumbnail   String?
+  duration    String?
+  featured    Boolean  @default(false)
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  category Category? @relation(fields: [categoryId], references: [id])
+  concept  Concept?  @relation(fields: [conceptId], references: [id])
+
+  @@index([categoryId])
+  @@index([conceptId])
+  @@index([featured])
+  @@map("videos")
+}
+
+model FounderStory {
+  id          String   @id @default(cuid())
+  title       String
+  company     String
+  founder     String
+  description String   @db.Text
+  learnings   String[] @db.Text
+  icon        String   @default("BookOpen")
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([featured])
+  @@map("founder_stories")
+}
+
+model CaseStudy {
+  id          String   @id @default(cuid())
+  title       String
+  company     String
+  description String   @db.Text
+  content     String   @db.Text
+  icon        String   @default("BookOpen")
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([featured])
+  @@map("case_studies")
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@index([active])
+  @@map("newsletter_subscribers")
+}
+
+model SocialLink {
+  id       String @id @default(cuid())
+  platform String @unique
+  url      String
+  label    String
+  active   Boolean @default(true)
+
+  @@index([active])
+  @@map("social_links")
+}

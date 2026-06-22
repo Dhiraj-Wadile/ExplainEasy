@@ -1,0 +1,96 @@
+import type { Metadata } from 'next'
+import { Geist, Geist_Mono } from 'next/font/google'
+import './globals.css'
+import { ThemeProvider } from '@/components/shared/theme-provider'
+import { QueryProvider } from '@/components/shared/query-provider'
+import { SessionProvider } from '@/components/shared/session-provider'
+import { AuthProvider } from '@/components/auth/auth-context'
+import { ErrorBoundary } from '@/components/shared/error-boundary'
+import { JsonLd } from '@/components/shared/json-ld'
+import { ChatBot } from '@/components/chat/chat-bot'
+import { Header } from '@/components/layout/header'
+import { Footer } from '@/components/layout/footer'
+import { PremiumModal } from '@/components/auth/premium-modal'
+
+const geistSans = Geist({
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+  display: 'swap',
+})
+
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+  display: 'swap',
+})
+
+export const metadata: Metadata = {
+  title: {
+    default: 'ExplainEasy - Business Concepts, Explained Simply',
+    template: '%s | ExplainEasy',
+  },
+  description:
+    'Master business, finance, and entrepreneurship concepts with AI-powered explanations, interactive learning, and daily insights.',
+  keywords: [
+    'business concepts',
+    'finance explained',
+    'entrepreneurship',
+    'AI learning',
+    'business education',
+    'marketing terms',
+    'startup glossary',
+  ],
+  authors: [{ name: 'ExplainEasy' }],
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://explaineasy.com'),
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'ExplainEasy',
+    title: 'ExplainEasy - Business Concepts, Explained Simply',
+    description:
+      'Master business, finance, and entrepreneurship concepts with AI-powered explanations and interactive learning.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ExplainEasy - Business Concepts, Explained Simply',
+    description:
+      'Master business, finance, and entrepreneurship concepts with AI-powered explanations and interactive learning.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+}
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <JsonLd />
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <SessionProvider>
+            <AuthProvider>
+              <QueryProvider>
+                <ErrorBoundary>
+                  <div className="flex min-h-screen flex-col">
+                    <Header />
+                    <div className="flex-1">{children}</div>
+                    <Footer />
+                  </div>
+                  <ChatBot />
+                  <PremiumModal />
+                </ErrorBoundary>
+              </QueryProvider>
+            </AuthProvider>
+          </SessionProvider>
+        </ThemeProvider>
+      </body>
+    </html>
+  )
+}
