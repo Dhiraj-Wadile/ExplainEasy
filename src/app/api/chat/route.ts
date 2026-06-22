@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server'
-import { generateChatResponse } from '@/lib/openai'
+import { generateChatResponse, generateChatResponseStream } from '@/lib/openai'
 import { searchTerms } from '@/data/index'
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
-function getFallbackResponse(messages: { role: string; content: string }[]): string {
+function getFallbackContent(messages: { role: string; content: string }[]): string {
   const lastMsg = messages[messages.length - 1]?.content || ''
   const query = lastMsg.toLowerCase().trim()
   if (!query) {
@@ -45,17 +45,35 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Message too long' }, { status: 400 })
     }
 
-    try {
-      const content = await generateChatResponse(messages)
-      return NextResponse.json({ role: 'assistant', content })
-    } catch {
-      const fallback = getFallbackResponse(messages)
-      return NextResponse.json({
-        role: 'assistant',
-        content: fallback,
-        source: 'knowledge-base',
-      })
-    }
+    const stream = new ReadableStream({
+      async start(controller) {
+        const encoder = new TextEncoder()
+        try {
+          const aiStream = await generateChatResponseStream(messages)
+          const reader = aiStream.getReader()
+          while (true) {
+            const { done, value } = await reader.read()
+            if (done) break
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content: new TextDecoder().decode(value) })}\n\n`))
+          }
+          controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+        } catch {
+          const fallback = getFallbackContent(messages)
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content: fallback, source: 'knowledge-base' })}\n\n`))
+          controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+        } finally {
+          controller.close()
+        }
+      },
+    })
+
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        Connection: 'keep-alive',
+      },
+    })
   } catch {
     return NextResponse.json({ error: 'Failed to generate response' }, { status: 500 })
   }

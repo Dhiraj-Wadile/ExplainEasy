@@ -24,15 +24,32 @@ export async function POST(request: Request) {
     const { email, otp } = parsed.data
     const type = (body.type as string) || 'VERIFY_EMAIL'
 
-    const isValid = await verifyOtp(email, otp, type as 'VERIFY_EMAIL' | 'PASSWORD_RESET')
-    if (!isValid) {
-      return NextResponse.json(
-        { error: 'Invalid or expired verification code. Please request a new one.' },
-        { status: 400 }
-      )
-    }
+    if (type === 'PASSWORD_RESET') {
+      const record = await prisma.otp.findFirst({
+        where: {
+          email,
+          otp,
+          type: 'PASSWORD_RESET',
+          used: false,
+          expiresAt: { gt: new Date() },
+        },
+        orderBy: { createdAt: 'desc' },
+      })
+      if (!record) {
+        return NextResponse.json(
+          { error: 'Invalid or expired verification code. Please request a new one.' },
+          { status: 400 }
+        )
+      }
+    } else {
+      const isValid = await verifyOtp(email, otp, 'VERIFY_EMAIL')
+      if (!isValid) {
+        return NextResponse.json(
+          { error: 'Invalid or expired verification code. Please request a new one.' },
+          { status: 400 }
+        )
+      }
 
-    if (type === 'VERIFY_EMAIL') {
       await prisma.user.update({
         where: { email },
         data: { emailVerified: new Date() },
@@ -40,7 +57,7 @@ export async function POST(request: Request) {
 
       const user = await prisma.user.findUnique({ where: { email } })
       if (user?.name) {
-        sendWelcomeEmail(email, user.name)
+        await sendWelcomeEmail(email, user.name)
       }
     }
 

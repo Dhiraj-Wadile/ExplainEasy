@@ -5,7 +5,8 @@ import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 const ALLOWED_TYPES = new Set(['concept', 'term', 'definition', 'idea', 'topic'])
 
 export async function POST(request: Request) {
-  const rl = await rateLimit('generate', 20, 60_000)
+  const ip = request.headers.get('x-forwarded-for') || 'unknown'
+  const rl = await rateLimit(`generate:${ip}`, 20, 60_000)
   if (!rl.allowed) return rateLimitResponse(rl.retryAfter!)
 
   try {

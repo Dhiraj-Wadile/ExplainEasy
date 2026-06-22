@@ -1,20 +1,27 @@
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 
-const RESEND_FROM = process.env.RESEND_FROM_EMAIL || 'noreply@explaineasy.com'
 const isDev = process.env.NODE_ENV === 'development'
 
-let resendClient: Resend | null = null
+let transporter: nodemailer.Transporter | null = null
 
-function getResend(): Resend | null {
-  if (resendClient) return resendClient
-  const apiKey = process.env.RESEND_API_KEY
-  if (!apiKey) return null
-  try {
-    resendClient = new Resend(apiKey)
-    return resendClient
-  } catch {
-    return null
+function getTransporter() {
+  if (transporter) return transporter
+  const host = process.env.SMTP_HOST
+  const port = parseInt(process.env.SMTP_PORT || '587')
+  const user = process.env.SMTP_USER
+  const pass = process.env.SMTP_PASS
+
+  if (host && user && pass) {
+    transporter = nodemailer.createTransport({
+      host,
+      port,
+      secure: port === 465,
+      auth: { user, pass },
+    })
+    return transporter
   }
+
+  return null
 }
 
 async function sendEmail(
@@ -23,20 +30,16 @@ async function sendEmail(
   html: string,
   otp?: string
 ): Promise<boolean> {
-  const resend = getResend()
+  const t = getTransporter()
 
-  if (resend) {
+  if (t) {
     try {
-      await resend.emails.send({
-        from: RESEND_FROM,
-        to,
-        subject,
-        html,
-      })
+      const fromEmail = process.env.SMTP_FROM_EMAIL || 'noreply@explaineasy.com'
+      await t.sendMail({ from: fromEmail, to, subject, html })
       console.log(`[EMAIL] Sent "${subject}" to ${to}`)
       return true
     } catch (err) {
-      console.error(`[EMAIL] Resend API error for "${subject}" to ${to}:`, err)
+      console.error(`[EMAIL] SMTP error for "${subject}" to ${to}:`, err)
     }
   }
 
@@ -50,7 +53,7 @@ async function sendEmail(
     return true
   }
 
-  console.error(`[EMAIL] Failed to send "${subject}" to ${to} — Resend not configured`)
+  console.error(`[EMAIL] Failed to send "${subject}" to ${to} — SMTP not configured`)
   return false
 }
 

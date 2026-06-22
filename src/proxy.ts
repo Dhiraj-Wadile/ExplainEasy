@@ -2,14 +2,14 @@ import { withAuth } from 'next-auth/middleware'
 import { NextResponse } from 'next/server'
 
 export default withAuth(
-  function middleware(req) {
+  function proxy(req) {
     const pathname = req.nextUrl.pathname
     const token = req.nextauth.token
 
     if (pathname.startsWith('/api/cron')) {
       const cronSecret = req.headers.get('x-cron-secret')
       if (cronSecret !== process.env.CRON_SECRET) {
-        console.warn('[MIDDLEWARE] Unauthorized cron attempt')
+        console.warn('[PROXY] Unauthorized cron attempt')
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
       }
       return NextResponse.next()
@@ -19,8 +19,8 @@ export default withAuth(
       if (!token) {
         return NextResponse.redirect(new URL('/auth/signin?callbackUrl=/admin', req.url))
       }
-      if (token.role !== 'ADMIN' && token.role !== 'EDITOR') {
-        return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 })
+      if (pathname === '/admin/dashboard') {
+        return NextResponse.redirect(new URL('/admin', req.url))
       }
       return NextResponse.next()
     }
@@ -67,5 +67,5 @@ export default withAuth(
 )
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/cron/:path*'],
+  matcher: ['/admin/:path*', '/admin', '/api/cron/:path*'],
 }

@@ -4,7 +4,7 @@ import { signIn, useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { Lightbulb, Loader2, AlertCircle, Eye, EyeOff } from 'lucide-react'
+import { Lightbulb, Loader2, AlertCircle, CheckCircle, Eye, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { loginSchema } from '@/lib/validations/auth'
@@ -18,6 +18,9 @@ export default function SignInPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [success, setSuccess] = useState(() => {
+    return searchParams.get('verified') === 'true' ? 'Email verified! You can now sign in.' : ''
+  })
   const [error, setError] = useState(() => {
     const e = searchParams.get('error')
     if (e === 'OAuthAccountNotLinked') return 'This email is already linked to another account. Please sign in using the original method.'
@@ -92,6 +95,12 @@ export default function SignInPage() {
             <p className="text-sm text-muted-foreground mt-1.5">Sign in to continue learning</p>
           </div>
 
+          {success && (
+            <div className="flex items-start gap-2.5 p-3.5 mb-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-sm text-emerald-400">
+              <CheckCircle className="w-4 h-4 mt-0.5 shrink-0" />
+              <span>{success}</span>
+            </div>
+          )}
           {error && (
             <div className="flex items-start gap-2.5 p-3.5 mb-4 rounded-xl bg-red-500/10 border border-red-500/20 text-sm text-red-400">
               <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />

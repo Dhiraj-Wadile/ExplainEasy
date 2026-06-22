@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
+import { sendDailyConceptEmail } from '@/lib/resend'
+import { getDailyTerm } from '@/data'
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -42,6 +44,23 @@ export async function POST(request: Request) {
     await prisma.newsletterSubscriber.create({
       data: { email },
     })
+
+    const dailyTerm = getDailyTerm()
+    if (dailyTerm) {
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://explaineasy.com'
+      const conceptUrl = `${baseUrl}/terms/${dailyTerm.slug}`
+      try {
+        await sendDailyConceptEmail(email, dailyTerm.name, conceptUrl, {
+          category: dailyTerm.category,
+          difficulty: dailyTerm.difficulty,
+          summary: dailyTerm.quickSummary || dailyTerm.simpleExplanation,
+          example: dailyTerm.example,
+          whyItMatters: dailyTerm.whyItMatters,
+        })
+      } catch (emailErr) {
+        console.error('[NEWSLETTER] Failed to send welcome email:', emailErr)
+      }
+    }
 
     return NextResponse.json(
       { message: 'Subscribed successfully!' },

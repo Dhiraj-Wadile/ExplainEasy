@@ -7,10 +7,9 @@ import { SessionProvider } from '@/components/shared/session-provider'
 import { AuthProvider } from '@/components/auth/auth-context'
 import { ErrorBoundary } from '@/components/shared/error-boundary'
 import { JsonLd } from '@/components/shared/json-ld'
-import { ChatBot } from '@/components/chat/chat-bot'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
-import { PremiumModal } from '@/components/auth/premium-modal'
+import { ChatBotLoader, PremiumModalLoader } from '@/components/dynamic-loaders'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -83,8 +82,8 @@ export default function RootLayout({
                     <div className="flex-1">{children}</div>
                     <Footer />
                   </div>
-                  <ChatBot />
-                  <PremiumModal />
+                  <ChatBotLoader />
+                  <PremiumModalLoader />
                 </ErrorBoundary>
               </QueryProvider>
             </AuthProvider>

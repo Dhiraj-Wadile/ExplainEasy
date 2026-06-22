@@ -23,14 +23,14 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <div className="max-w-6xl mx-auto flex items-center justify-between px-4 h-14">
-        <Link href="/" className="flex items-center gap-2 shrink-0 group">
-          <div className="w-7 h-7 rounded-md bg-primary flex items-center justify-center">
-            <Lightbulb className="w-3.5 h-3.5 text-white" />
-          </div>
-          <span className="font-semibold text-sm tracking-tight text-foreground">
-            explain<span className="text-primary">easy</span>
-          </span>
-        </Link>
+          <Link href="/" className="flex items-center gap-2 shrink-0 group">
+            <div className="w-7 h-7 rounded-md bg-primary flex items-center justify-center">
+              <Lightbulb className="w-3.5 h-3.5 text-white" />
+            </div>
+            <span className="font-semibold text-sm tracking-tight text-foreground">
+              explain<span className="text-primary">easy</span>
+            </span>
+          </Link>
 
         <nav className="hidden md:flex items-center gap-0.5">
           {navLinks.map((link) => (

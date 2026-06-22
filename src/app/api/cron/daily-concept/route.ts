@@ -22,7 +22,13 @@ export async function GET() {
 
     const results = await Promise.allSettled(
       subscribers.map((sub) =>
-        sendDailyConceptEmail(sub.email, dailyTerm.name, conceptUrl)
+        sendDailyConceptEmail(sub.email, dailyTerm.name, conceptUrl, {
+          category: dailyTerm.category,
+          difficulty: dailyTerm.difficulty,
+          summary: dailyTerm.quickSummary || dailyTerm.simpleExplanation,
+          example: dailyTerm.example,
+          whyItMatters: dailyTerm.whyItMatters,
+        })
       )
     )
 

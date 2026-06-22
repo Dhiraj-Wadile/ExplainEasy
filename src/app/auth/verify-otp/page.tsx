@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { Lightbulb, Loader2, AlertCircle, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { signIn } from 'next-auth/react'
 
 export default function VerifyOtpPage() {
   const router = useRouter()
@@ -98,13 +97,8 @@ export default function VerifyOtpPage() {
           router.push(`/auth/reset-password?${params}`)
         }, 1000)
       } else {
-        await signIn('credentials', {
-          email,
-          password: code,
-          redirect: false,
-        }).catch(() => {})
         setTimeout(() => {
-          router.push('/')
+          router.push('/auth/signin?verified=true')
         }, 1500)
       }
     } catch {

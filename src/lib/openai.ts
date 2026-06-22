@@ -1,5 +1,5 @@
 const API_KEY = process.env.OPENAI_API_KEY
-const BASE_URL = 'https://api.openai.com/v1'
+const BASE_URL = 'https://opencode.ai/zen/v1'
 
 async function openaiPost(path: string, body: Record<string, unknown>, retries = 2) {
   if (!API_KEY) {
@@ -21,7 +21,7 @@ async function openaiPost(path: string, body: Record<string, unknown>, retries =
 
       if (!res.ok) {
         const text = await res.text()
-        throw new Error(`OpenAI ${res.status}: ${text}`)
+        throw new Error(`API ${res.status}: ${text}`)
       }
 
       return res.json()
@@ -34,6 +34,106 @@ async function openaiPost(path: string, body: Record<string, unknown>, retries =
   }
 
   throw lastError || new Error('OpenAI request failed')
+}
+
+async function openaiPostStream(path: string, body: Record<string, unknown>, retries = 2) {
+  if (!API_KEY) {
+    throw new Error('OPENAI_API_KEY is not configured')
+  }
+
+  let lastError: Error | null = null
+
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const res = await fetch(`${BASE_URL}${path}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${API_KEY}`,
+        },
+        body: JSON.stringify({ ...body, stream: true }),
+      })
+
+      if (!res.ok) {
+        const text = await res.text()
+        throw new Error(`API ${res.status}: ${text}`)
+      }
+
+      return res.body
+    } catch (err) {
+      lastError = err as Error
+      if (attempt < retries) {
+        await new Promise((r) => setTimeout(r, 1000 * Math.pow(2, attempt)))
+      }
+    }
+  }
+
+  throw lastError || new Error('OpenAI stream request failed')
+}
+
+const encoder = new TextEncoder()
+
+export async function generateChatResponseStream(
+  messages: { role: string; content: string }[]
+): Promise<ReadableStream> {
+  if (!messages || messages.length === 0) {
+    throw new Error('Messages array cannot be empty')
+  }
+
+  const body = {
+    model: 'deepseek-v4-flash-free',
+    messages: [
+      { role: 'system', content: SYSTEM_PROMPT },
+      ...messages.map((m) => ({
+        role: m.role === 'assistant' ? 'assistant' : 'user',
+        content: m.content,
+      })),
+    ],
+  }
+
+  const upstream = await openaiPostStream('/chat/completions', body)
+  if (!upstream) throw new Error('No response body from stream')
+
+  const reader = upstream.getReader()
+  const decoder = new TextDecoder()
+
+  return new ReadableStream({
+    async start(controller) {
+      let buffer = ''
+      try {
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+
+          buffer += decoder.decode(value, { stream: true })
+          const lines = buffer.split('\n')
+          buffer = lines.pop() || ''
+
+          for (const line of lines) {
+            const trimmed = line.trim()
+            if (!trimmed || !trimmed.startsWith('data: ')) continue
+            const data = trimmed.slice(6)
+            if (data === '[DONE]') continue
+
+            try {
+              const parsed = JSON.parse(data)
+              const content = parsed.choices?.[0]?.delta?.content || ''
+              if (content) {
+                controller.enqueue(encoder.encode(content))
+              }
+            } catch {
+              // skip malformed chunks
+            }
+          }
+        }
+      } catch (err) {
+        controller.error(err)
+      } finally {
+        reader.releaseLock()
+        controller.close()
+      }
+    },
+  })
 }
 
 const SYSTEM_PROMPT = `You are ExplainEasy AI, a friendly business knowledge assistant.
@@ -52,7 +152,7 @@ export async function generateChatResponse(messages: { role: string; content: st
   }
 
   const body = {
-    model: 'gpt-4o-mini',
+    model: 'deepseek-v4-flash-free',
     messages: [
       { role: 'system', content: SYSTEM_PROMPT },
       ...messages.map((m) => ({
@@ -84,7 +184,7 @@ export async function generateThought(): Promise<{
   }
 
   const body = {
-    model: 'gpt-4o-mini',
+    model: 'deepseek-v4-flash-free',
     messages: [
       {
         role: 'system',

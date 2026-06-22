@@ -1,18 +1,10 @@
-'use client'
-
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { motion } from 'framer-motion'
-import { useState, FormEvent, useEffect } from 'react'
 import {
   Sparkles,
   BookOpen,
   ChevronRight,
   ArrowRight,
-  Search,
   CheckCircle2,
-  Loader2,
-  AlertCircle,
   Zap,
 } from 'lucide-react'
 import { categories } from '@/data/categories'
@@ -24,48 +16,17 @@ import { FadeInUp, StaggerContainer, StaggerItem } from '@/components/shared/mot
 import { getIcon } from '@/lib/icons'
 import { getDailyQuote, quotes } from '@/data/quotes'
 import { ThoughtOfDay } from '@/components/shared/thought-of-day'
+import { HeroSearch } from '@/components/home/hero-search'
+import { NewsletterForm } from '@/components/home/newsletter-form'
 
-const searchExamples = [
-  'What is EBITDA?',
-  'What is RAG?',
-  'How does UPI work?',
-  'What is MVP?',
-  'What is Machine Learning?',
-]
-
-function SearchPlaceholder({ examples }: { examples: string[] }) {
-  const [, setIndex] = useState(0)
-  const [text, setText] = useState(examples[0])
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => {
-        const next = (prev + 1) % examples.length
-        setText(examples[next])
-        return next
-      })
-    }, 3000)
-    return () => clearInterval(timer)
-  }, [examples, setIndex])
-
-  return (
-    <span className="text-muted-foreground/60" key={text}>
-      {text}
-    </span>
-  )
-}
+const CONCEPT_COUNT = allTerms.length
 
 export default function HomePage() {
-  const router = useRouter()
-  const [searchQuery, setSearchQuery] = useState('')
-  const [searchFocused, setSearchFocused] = useState(false)
-
   const dailyTerm = getDailyTerm() ?? allTerms[0]
   const dailyQuote = getDailyQuote()
 
   return (
     <main className="min-h-screen">
-      {/* ─── Hero ─── */}
       <section className="section-padding pb-0">
         <div className="max-w-3xl mx-auto text-center px-4">
           <FadeInUp>
@@ -90,46 +51,12 @@ export default function HomePage() {
             </p>
           </FadeInUp>
 
-          {/* Search — hero CTA */}
           <FadeInUp delay={0.15}>
             <div className="max-w-xl mx-auto mb-6">
-              <div
-                className="relative flex items-center bg-card border rounded-2xl transition-all duration-300"
-                style={{
-                  borderColor: searchFocused ? 'var(--primary)' : 'var(--border)',
-                  boxShadow: searchFocused
-                    ? '0 0 0 3px rgba(124,108,242,0.12), 0 8px 32px rgba(124,108,242,0.08)'
-                    : '0 1px 3px rgba(0,0,0,0.04)',
-                }}
-              >
-                <Search className="absolute left-4 w-5 h-5 text-muted-foreground pointer-events-none" />
-                <input
-                  type="text"
-                  placeholder=" "
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onFocus={() => setSearchFocused(true)}
-                  onBlur={() => setSearchFocused(false)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && searchQuery.trim()) {
-                      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
-                    }
-                  }}
-                  className="w-full h-14 pl-12 pr-4 bg-transparent text-foreground text-base outline-none rounded-2xl"
-                />
-                {!searchQuery && (
-                  <span className="absolute left-12 pointer-events-none text-base truncate max-w-[80%]">
-                    <SearchPlaceholder examples={searchExamples} />
-                  </span>
-                )}
-                <kbd className="hidden sm:inline-flex items-center gap-1 mr-3 px-2 py-1 rounded-lg bg-muted/50 border border-border text-[11px] text-muted-foreground shrink-0">
-                  <span className="text-xs">⌘</span>K
-                </kbd>
-              </div>
+              <HeroSearch />
             </div>
           </FadeInUp>
 
-          {/* Trust badges */}
           <FadeInUp delay={0.2}>
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground mb-10">
               <span className="inline-flex items-center gap-1.5">
@@ -147,7 +74,6 @@ export default function HomePage() {
             </div>
           </FadeInUp>
 
-          {/* CTA buttons */}
           <FadeInUp delay={0.25}>
             <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
               <Link href="/categories">
@@ -163,11 +89,10 @@ export default function HomePage() {
             </div>
           </FadeInUp>
 
-          {/* Stats */}
           <FadeInUp delay={0.3}>
             <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
               <div className="rounded-xl border border-border bg-card p-4">
-                <div className="text-2xl font-bold text-foreground tabular-nums">{allTerms.length}+</div>
+                <div className="text-2xl font-bold text-foreground tabular-nums">{CONCEPT_COUNT}+</div>
                 <div className="text-xs text-muted-foreground mt-0.5">Concepts Explained</div>
               </div>
               <div className="rounded-xl border border-border bg-card p-4">
@@ -183,7 +108,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── Daily Concept ─── */}
       <section className="section-padding">
         <div className="max-w-6xl mx-auto px-4">
           <FadeInUp>
@@ -213,7 +137,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── Categories ─── */}
       <section className="section-padding pt-0">
         <div className="max-w-6xl mx-auto px-4">
           <FadeInUp>
@@ -258,7 +181,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── Popular Concepts ─── */}
       {popularTerms.length > 0 && (
         <section className="section-padding pt-0">
           <div className="max-w-6xl mx-auto px-4">
@@ -304,10 +226,8 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* ─── Quote ─── */}
       {dailyQuote && <ThoughtOfDay initialQuote={dailyQuote} quotesPool={quotes} />}
 
-      {/* ─── Newsletter ─── */}
       <section className="section-padding pt-0">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <FadeInUp>
@@ -323,91 +243,5 @@ export default function HomePage() {
         </div>
       </section>
     </main>
-  )
-}
-
-function NewsletterForm() {
-  const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
-  const [message, setMessage] = useState('')
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault()
-    if (!email.includes('@')) {
-      setStatus('error')
-      setMessage('Please enter a valid email address')
-      return
-    }
-
-    setStatus('loading')
-    try {
-      const res = await fetch('/api/newsletter', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      })
-      const data = await res.json()
-
-      if (res.ok) {
-        setStatus('success')
-        setMessage(data.message || 'Subscribed successfully!')
-        setEmail('')
-      } else {
-        setStatus('error')
-        setMessage(data.error || 'Something went wrong')
-      }
-    } catch {
-      setStatus('error')
-      setMessage('Network error. Please try again.')
-    }
-  }
-
-  if (status === 'success') {
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="flex flex-col items-center gap-3 py-4"
-      >
-        <CheckCircle2 className="w-10 h-10 text-emerald-500" />
-        <p className="font-medium text-emerald-400">{message}</p>
-        <p className="text-xs text-muted-foreground">Free forever. No spam. Unsubscribe anytime.</p>
-      </motion.div>
-    )
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => { setEmail(e.target.value); if (status === 'error') setStatus('idle') }}
-          placeholder="Enter your email"
-          className="flex-1 h-11 px-4 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground text-sm outline-none focus:border-primary/50 transition-colors"
-        />
-        <Button type="submit" disabled={status === 'loading'} className="h-11 gap-2">
-          {status === 'loading' ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <ArrowRight className="w-4 h-4" />
-          )}
-          {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
-        </Button>
-      </div>
-      {status === 'error' && (
-        <motion.p
-          initial={{ opacity: 0, y: -4 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-center gap-1.5 text-xs text-red-500 mt-3"
-        >
-          <AlertCircle className="w-3.5 h-3.5" />
-          {message}
-        </motion.p>
-      )}
-      {status === 'idle' && (
-        <p className="text-xs text-muted-foreground mt-3">Free forever. No spam. Unsubscribe anytime.</p>
-      )}
-    </form>
   )
 }

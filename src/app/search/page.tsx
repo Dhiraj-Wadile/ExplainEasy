@@ -94,7 +94,7 @@ export default function SearchPage() {
           <select
             value={filters.category}
             onChange={(e) => setFilters((f) => ({ ...f, category: e.target.value }))}
-            className="h-11 rounded-xl border border-border bg-background px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
+            className="h-11 rounded-xl border border-border bg-background px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-colors w-full sm:w-auto"
           >
             <option value="all">All Categories</option>
             {categories.map((cat) => (
@@ -104,7 +104,7 @@ export default function SearchPage() {
           <select
             value={filters.difficulty}
             onChange={(e) => setFilters((f) => ({ ...f, difficulty: e.target.value }))}
-            className="h-11 rounded-xl border border-border bg-background px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
+            className="h-11 rounded-xl border border-border bg-background px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-colors w-full sm:w-auto"
           >
             <option value="all">All Levels</option>
             <option value="Beginner">Beginner</option>
@@ -114,7 +114,7 @@ export default function SearchPage() {
           <select
             value={filters.sortBy}
             onChange={(e) => setFilters((f) => ({ ...f, sortBy: e.target.value as GlossaryFilters['sortBy'] }))}
-            className="h-11 rounded-xl border border-border bg-background px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
+            className="h-11 rounded-xl border border-border bg-background px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-colors w-full sm:w-auto"
           >
             <option value="name">Sort: Name</option>
             <option value="category">Sort: Category</option>

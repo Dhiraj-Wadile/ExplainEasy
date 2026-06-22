@@ -38,11 +38,63 @@ export function ChatBot() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: [...messages, userMsg] }),
       })
-      const data = await res.json()
-      setMessages((prev) => [
-        ...prev,
-        { role: 'assistant', content: data.content || data.error || 'No response received.' },
-      ])
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        setMessages((prev) => [
+          ...prev,
+          { role: 'assistant', content: err.error || 'Request failed' },
+        ])
+        setLoading(false)
+        return
+      }
+
+      const contentType = res.headers.get('content-type') || ''
+      if (contentType.includes('text/event-stream')) {
+        const assistantMsg: Message = { role: 'assistant', content: '' }
+        setMessages((prev) => [...prev, assistantMsg])
+
+        const reader = res.body?.getReader()
+        if (!reader) throw new Error('No readable stream')
+
+        const decoder = new TextDecoder()
+        let buffer = ''
+
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+
+          buffer += decoder.decode(value, { stream: true })
+          const lines = buffer.split('\n')
+          buffer = lines.pop() || ''
+
+          for (const line of lines) {
+            const trimmed = line.trim()
+            if (!trimmed.startsWith('data: ')) continue
+            const data = trimmed.slice(6)
+            if (data === '[DONE]') continue
+
+            try {
+              const parsed = JSON.parse(data)
+              if (parsed.content) {
+                setMessages((prev) => {
+                  const next = [...prev]
+                  next[next.length - 1] = { role: 'assistant', content: next[next.length - 1].content + parsed.content }
+                  return next
+                })
+              }
+            } catch {
+              // skip
+            }
+          }
+        }
+      } else {
+        const data = await res.json()
+        setMessages((prev) => [
+          ...prev,
+          { role: 'assistant', content: data.content || data.error || 'No response received.' },
+        ])
+      }
     } catch {
       setMessages((prev) => [
         ...prev,
@@ -62,7 +114,7 @@ export function ChatBot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.97 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-20 right-4 z-50 w-[360px] h-[520px] bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            className="fixed bottom-20 right-4 z-50 w-[calc(100vw-2rem)] sm:w-[360px] h-[520px] bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           >
             <div className="flex items-center justify-between px-4 py-3 border-b border-border">
               <div className="flex items-center gap-2.5">
