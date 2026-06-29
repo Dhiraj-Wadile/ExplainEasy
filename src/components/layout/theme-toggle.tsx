@@ -1,12 +1,12 @@
 'use client'
 
-import { useTheme } from 'next-themes'
+import { useThemeCtx } from '@/components/shared/app-theme'
 import { Sun, Moon } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useSyncExternalStore } from 'react'
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme } = useThemeCtx()
   const isClient = useSyncExternalStore(
     () => () => {},
     () => true,

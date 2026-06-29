@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X, Lightbulb, LogIn } from 'lucide-react'
@@ -9,16 +9,41 @@ import { useSession } from 'next-auth/react'
 import { ThemeToggle } from './theme-toggle'
 import { cn } from '@/lib/utils'
 
-const navLinks = [
+function NavLink({ href, label, pathname, onClick }: { href: string; label: string; pathname: string; onClick?: () => void }) {
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className={cn(
+        'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors',
+        pathname === href
+          ? 'text-foreground bg-white/5'
+          : 'text-muted-foreground hover:text-foreground hover:bg-white/[0.03]'
+      )}
+    >
+      {label}
+    </Link>
+  )
+}
+
+const sharedLinks = [
   { label: 'Categories', href: '/categories' },
   { label: 'Videos', href: '/videos' },
+  { label: 'Roadmaps', href: '/roadmaps' },
   { label: 'Resources', href: '/resources' },
 ]
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
   const { data: session } = useSession()
+
+  useEffect(() => { setMounted(true) }, [])
+
+  const navLinks = mounted
+    ? [...sharedLinks, { label: 'Dashboard', href: '/dashboard' }]
+    : sharedLinks
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl">
@@ -34,18 +59,7 @@ export function Header() {
 
         <nav className="hidden md:flex items-center gap-0.5">
           {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors',
-                pathname === link.href
-                  ? 'text-foreground bg-white/5'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-white/[0.03]'
-              )}
-            >
-              {link.label}
-            </Link>
+            <NavLink key={link.href} href={link.href} label={link.label} pathname={pathname} />
           ))}
         </nav>
 
@@ -53,7 +67,8 @@ export function Header() {
           <ThemeToggle />
           {session ? (
             <Link
-              href="/admin"
+              href="/dashboard"
+              title="Dashboard"
               className="ml-1.5 w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white text-xs font-semibold hover:opacity-90 transition-opacity"
             >
               {session.user?.name?.[0] || 'A'}
@@ -92,7 +107,7 @@ export function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  onClick={() => setMobileOpen(false)}
+                  onClick={() => { setMobileOpen(false); setMounted(true) }}
                   className={cn(
                     'flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
                     pathname === link.href
@@ -105,16 +120,25 @@ export function Header() {
               ))}
               <div className="pt-2 mt-2 border-t border-border">
                 {session ? (
-                  <Link
-                    href="/admin"
-                    onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-white/5 transition-colors"
-                  >
-                    <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-white text-xs font-semibold">
-                      {session.user?.name?.[0] || 'A'}
-                    </div>
-                    Dashboard
-                  </Link>
+                  <>
+                    <Link
+                      href="/dashboard"
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-white/5 transition-colors"
+                    >
+                      <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-white text-xs font-semibold">
+                        {session.user?.name?.[0] || 'A'}
+                      </div>
+                      Dashboard
+                    </Link>
+                    <Link
+                      href="/admin"
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+                    >
+                      Admin
+                    </Link>
+                  </>
                 ) : (
                   <Link
                     href="/auth/signin"

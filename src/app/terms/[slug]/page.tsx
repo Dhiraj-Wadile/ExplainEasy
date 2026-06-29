@@ -9,12 +9,25 @@ import { FadeInUp } from '@/components/shared/motion-wrapper'
 import { notFound } from 'next/navigation'
 import { useState } from 'react'
 import { useFavoritesStore } from '@/lib/store'
+import { useEffect } from 'react'
+import { MarkLearned } from '@/components/learn/mark-learned'
+import { ReadingProgress } from '@/components/learn/reading-progress'
+import { QuizSection } from '@/components/quiz/quiz-section'
+import { useChatContext } from '@/lib/store'
 
 export default function ConceptPage() {
   const params = useParams()
   const concept = getTermBySlug(params.slug as string)
   const [activeTab, setActiveTab] = useState('overview')
   const { isFavorite, addFavorite, removeFavorite } = useFavoritesStore()
+  const { setConcept } = useChatContext()
+
+  useEffect(() => {
+    if (concept) {
+      setConcept({ name: concept.name, slug: concept.slug, definition: concept.definition, category: concept.category })
+    }
+    return () => setConcept(null)
+  }, [concept, setConcept])
 
   if (!concept) {
     notFound()
@@ -29,10 +42,12 @@ export default function ConceptPage() {
     { id: 'details', label: 'Deep Dive', icon: Brain },
     { id: 'interview', label: 'Interview Prep', icon: Target },
     { id: 'faq', label: 'FAQ', icon: HelpCircle },
+    { id: 'quiz', label: 'Quiz', icon: Brain },
   ]
 
   return (
     <div className="min-h-screen">
+      <ReadingProgress />
       {/* Header */}
       <div className="border-b border-border">
         <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 lg:px-8">
@@ -58,11 +73,12 @@ export default function ConceptPage() {
               <p className="mt-2 text-lg text-muted-foreground">{concept.definition}</p>
             </div>
           </div>
-          <div className="flex items-center gap-4 mt-6 text-sm text-muted-foreground">
+          <div className="flex items-center gap-4 mt-6 text-sm text-muted-foreground flex-wrap">
             <div className="flex items-center gap-1.5">
               <Clock className="h-4 w-4" />
               <span>{readTime} min read</span>
             </div>
+            <MarkLearned conceptSlug={concept.slug} />
             <button
               onClick={() => isFavorite(concept.slug) ? removeFavorite(concept.slug) : addFavorite(concept.slug)}
               className={`flex items-center gap-1.5 transition-colors ${isFavorite(concept.slug) ? 'text-primary' : 'hover:text-foreground text-muted-foreground'}`}
@@ -290,6 +306,12 @@ export default function ConceptPage() {
                 </div>
               </Section>
             </div>
+          </FadeInUp>
+        )}
+
+        {activeTab === 'quiz' && (
+          <FadeInUp key="quiz">
+            <QuizSection conceptSlug={concept.slug} conceptName={concept.name} />
           </FadeInUp>
         )}
 

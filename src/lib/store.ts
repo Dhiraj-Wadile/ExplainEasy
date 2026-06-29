@@ -73,3 +73,57 @@ export const useUIStore = create<UIState>((set) => ({
   setMobileMenuOpen: (open) => set({ isMobileMenuOpen: open }),
   toggleMobileMenu: () => set((s) => ({ isMobileMenuOpen: !s.isMobileMenuOpen })),
 }))
+
+interface ChatContextState {
+  concept: { name: string; slug: string; definition: string; category: string } | null
+  setConcept: (concept: { name: string; slug: string; definition: string; category: string } | null) => void
+}
+
+export const useChatContext = create<ChatContextState>((set) => ({
+  concept: null,
+  setConcept: (concept) => set({ concept }),
+}))
+
+const CHAT_HISTORY_KEY = 'explaineasy_chat_history'
+
+interface ChatMessage {
+  role: 'user' | 'assistant'
+  content: string
+}
+
+function loadChatHistory(): ChatMessage[] {
+  if (typeof window === 'undefined') return []
+  try {
+    const raw = localStorage.getItem(CHAT_HISTORY_KEY)
+    return raw ? JSON.parse(raw) : []
+  } catch {
+    return []
+  }
+}
+
+function saveChatHistory(messages: ChatMessage[]) {
+  if (typeof window === 'undefined') return
+  try {
+    localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(messages.slice(-20)))
+  } catch { /* quota */ }
+}
+
+interface ChatHistoryState {
+  history: ChatMessage[]
+  addMessage: (msg: ChatMessage) => void
+  clearHistory: () => void
+}
+
+export const useChatHistory = create<ChatHistoryState>((set) => ({
+  history: loadChatHistory(),
+  addMessage: (msg) =>
+    set((state) => {
+      const next = [...state.history, msg]
+      saveChatHistory(next)
+      return { history: next }
+    }),
+  clearHistory: () => {
+    saveChatHistory([])
+    set({ history: [] })
+  },
+}))

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Engineer Roadmap | Production AI | RAG | Agents | Monitoring</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #070b17;
+      color: #e2e8f0;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* animated background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(124,58,237,0.15), transparent 70%),
+                  radial-gradient(ellipse 60% 50% at 80% 70%, rgba(168,85,247,0.08), transparent 60%),
+                  radial-gradient(ellipse 50% 40% at 20% 80%, rgba(99,102,241,0.06), transparent 50%);
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(168,85,247,0.3), transparent),
+        radial-gradient(1px 1px at 30% 65%, rgba(124,58,237,0.2), transparent),
+        radial-gradient(1.5px 1.5px at 50% 10%, rgba(168,85,247,0.3), transparent),
+        radial-gradient(1px 1px at 70% 40%, rgba(124,58,237,0.2), transparent),
+        radial-gradient(1px 1px at 90% 80%, rgba(168,85,247,0.25), transparent),
+        radial-gradient(1.5px 1.5px at 15% 85%, rgba(99,102,241,0.2), transparent),
+        radial-gradient(1px 1px at 60% 90%, rgba(168,85,247,0.15), transparent),
+        radial-gradient(1px 1px at 80% 15%, rgba(124,58,237,0.2), transparent),
+        radial-gradient(1.5px 1.5px at 40% 45%, rgba(168,85,247,0.15), transparent),
+        radial-gradient(1px 1px at 85% 55%, rgba(99,102,241,0.2), transparent);
+      animation: twinkle 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    .banner {
+      position: relative;
+      padding: 28px 30px 22px;
+      text-align: center;
+      border-bottom: 1px solid rgba(124,58,237,0.2);
+      background: linear-gradient(180deg, rgba(30,27,75,0.9) 0%, rgba(15,10,40,0.6) 100%);
+      backdrop-filter: blur(20px);
+    }
+
+    .banner h1 {
+      font-size: 1.8rem;
+      background: linear-gradient(135deg, #c4b5fd, #a78bfa, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .banner p {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      font-weight: 400;
+    }
+
+    .banner .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #6d28d9, #7c3aed);
+      color: #fff;
+      padding: 5px 18px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      margin-top: 10px;
+      letter-spacing: 0.03em;
+      box-shadow: 0 0 20px rgba(124,58,237,0.3);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: #a78bfa;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: #c4b5fd; text-decoration: underline; }
+
+    .social-banner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 20px;
+      background: rgba(15,10,40,0.5);
+      border-bottom: 1px solid rgba(124,58,237,0.08);
+    }
+
+    .social-banner a {
+      text-decoration: none;
+      color: #94a3b8;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: 30px;
+      background: rgba(30,27,75,0.6);
+      border: 1px solid rgba(124,58,237,0.1);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.3s ease;
+    }
+
+    .social-banner a:hover {
+      background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(168,85,247,0.2));
+      border-color: rgba(124,58,237,0.4);
+      color: #e2e8f0;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(124,58,237,0.15);
+    }
+
+    /* ─── markmap overrides ─── */
+    #mindmap {
+      display: block;
+      width: 100vw;
+      height: calc(100vh - 165px);
+      background: transparent;
+    }
+
+    .markmap-foreign {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      color: #e2e8f0 !important;
+      background: rgba(15,10,40,0.8) !important;
+      backdrop-filter: blur(12px) !important;
+      padding: 4px 10px !important;
+      border-radius: 8px !important;
+      border: 1px solid rgba(124,58,237,0.15) !important;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important;
+      transition: all 0.2s ease !important;
+    }
+
+    .markmap-foreign:hover {
+      border-color: rgba(124,58,237,0.4) !important;
+      box-shadow: 0 4px 30px rgba(124,58,237,0.15) !important;
+    }
+
+    .markmap-foreign strong {
+      color: #c4b5fd !important;
+      font-size: 1.05em;
+    }
+
+    .markmap-foreign a {
+      color: #60a5fa !important;
+      text-decoration: underline;
+      font-weight: 700;
+      font-size: 1em;
+    }
+
+    #mindmap text {
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      fill: #f1f5f9 !important;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+      paint-order: stroke;
+      stroke: #070b17;
+      stroke-width: 2px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    #mindmap path {
+      stroke: url(#lineGradient) !important;
+      stroke-width: 2.5 !important;
+      opacity: 0.7;
+    }
+
+    #mindmap circle {
+      fill: #a78bfa !important;
+      stroke: #7c3aed !important;
+      stroke-width: 2px !important;
+      filter: drop-shadow(0 0 6px rgba(124,58,237,0.4));
+    }
+
+    #mindmap g:first-child > text {
+      font-size: 22px !important;
+      font-weight: 900 !important;
+      fill: url(#rootGradient) !important;
+    }
+
+    /* toolbar */
+    .markmap-toolbar {
+      position: absolute !important;
+      bottom: 20px !important;
+      right: 20px !important;
+    }
+
+    @media (max-width: 640px) {
+      .banner h1 { font-size: 1.3rem; }
+      .banner p { font-size: 0.8rem; }
+      #mindmap { height: calc(100vh - 180px); }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.17.3-alpha.1/dist/style.css" />
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#7c3aed" />
+        <stop offset="50%" stop-color="#a78bfa" />
+        <stop offset="100%" stop-color="#6d28d9" />
+      </linearGradient>
+      <linearGradient id="rootGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#c4b5fd" />
+        <stop offset="50%" stop-color="#a78bfa" />
+        <stop offset="100%" stop-color="#7c3aed" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="banner">
+    <h1>AI Engineer Roadmap</h1>
+    <p>Production AI Systems &bull; RAG Pipelines &bull; AI Agents &bull; Monitoring &bull; Engineering Judgment</p>
+    <span class="badge">AI ENGINEER TRACK</span>
+    <br />
+    <a class="back-link" href="/roadmaps">← Back to Roadmaps</a>
+  </div>
+
+  <div class="social-banner">
+    <a href="https://python.langchain.com/" target="_blank">LangChain</a>
+    <a href="https://www.llamaindex.ai/" target="_blank">LlamaIndex</a>
+    <a href="https://huggingface.co/" target="_blank">HuggingFace</a>
+    <a href="https://www.together.ai/" target="_blank">Together AI</a>
+    <a href="https://www.anyscale.com/" target="_blank">Ray / Anyscale</a>
+    <a href="https://www.pinecone.io/" target="_blank">Pinecone</a>
+    <a href="https://www.langsmith.com/" target="_blank">LangSmith</a>
+  </div>
+
+  <svg id="mindmap"></svg>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.17.3-alpha.1/dist/browser/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.17.3-alpha.1/dist/index.js"></script>
+  <script>(() => { setTimeout(() => { const { markmap: q, mm: N } = window, j = new q.Toolbar; j.attach(N); const we = j.render(); we.setAttribute("style", "position:absolute;bottom:20px;right:20px"), document.body.append(we) }) })()</script>
+  <script>((u, d, h, f) => { const g = u(); window.mm = g.Markmap.create("svg#mindmap", (d || g.deriveOptions)(f), h) })(() => window.markmap, null, { "content": "AI Engineer: Production AI Systems &amp; LLMOps", "children": [
+    {
+      "content": "1. <strong>Build Production Systems</strong>",
+      "children": [
+        { "content": "<strong>System Design for AI</strong>", "children": [
+          { "content": "Model serving: Triton, TorchServe, vLLM, TGI", "children": [] },
+          { "content": "Batching: continuous batching, dynamic batching", "children": [] },
+          { "content": "GPU optimization: CUDA, TensorRT, ONNX, quantization", "children": [] },
+          { "content": "Scaling: Ray Serve, KServe, Seldon Core", "children": [] },
+          { "content": "API design: streaming, SSE, WebSocket vs REST", "children": [] }
+        ] },
+        { "content": "<strong>Data Pipelines</strong>", "children": [
+          { "content": "Feature stores: Feast, Tecton", "children": [] },
+          { "content": "Data processing: Spark, Beam, Flink", "children": [] },
+          { "content": "Real-time vs batch pipelines", "children": [] },
+          { "content": "Orchestration: Airflow, Prefect, Dagster", "children": [] }
+        ] },
+        { "content": "<strong>Infrastructure &amp; Deployment</strong>", "children": [
+          { "content": "Docker + Kubernetes, Helm charts", "children": [] },
+          { "content": "CI/CD: DVC, MLflow, Kubeflow Pipelines", "children": [] },
+          { "content": "Cloud: SageMaker, Vertex AI, Azure ML", "children": [] },
+          { "content": "Serverless: Lambda + API Gateway, Cloud Run", "children": [] }
+        ] },
+        { "content": "<strong>Resources</strong>", "children": [
+          { "content": "<a href='https://www.youtube.com/playlist?list=PL78D0HQ3E1j3BE5wLJmBqMZa-bLh8NBVD'>MLOps (Made With ML)</a>" },
+          { "content": "<a href='https://www.manning.com/books/machine-learning-engineering'>ML Engineering (Burkov)</a>" },
+          { "content": "<a href='https://www.oreilly.com/library/view/designing-machine-learning/9781098107956/'>Designing ML Systems (Huyen)</a>" },
+          { "content": "<a href='https://github.com/chiphuyen/mlops-guide'>MLOps Guide (Chip Huyen)</a>" },
+          { "content": "<a href='https://ray.io/'>Ray Docs</a>" }
+        ] }
+      ]
+    },
+    {
+      "content": "2. <strong>Deploy RAG Pipelines</strong>",
+      "children": [
+        { "content": "<strong>RAG Architecture</strong>", "children": [
+          { "content": "RAG: indexing → retrieval → synthesis", "children": [] },
+          { "content": "Chunking: semantic, recursive, token-based", "children": [] },
+          { "content": "Embeddings: ada-002, Cohere, BGE, E5", "children": [] },
+          { "content": "Vector DB: Pinecone, Weaviate, Qdrant, Chroma, Milvus", "children": [] },
+          { "content": "Hybrid search: dense + sparse (BM25), RRF", "children": [] }
+        ] },
+        { "content": "<strong>Advanced RAG</strong>", "children": [
+          { "content": "Multi-hop RAG, query decomposition", "children": [] },
+          { "content": "Self-querying &amp; routing retrievers", "children": [] },
+          { "content": "Graph RAG + knowledge graphs (Neo4j)", "children": [] },
+          { "content": "Agentic RAG: re-ranking, CRAG", "children": [] },
+          { "content": "RAG eval: RAGAS, TruLens, DeepEval", "children": [] }
+        ] },
+        { "content": "<strong>RAG Frameworks</strong>", "children": [
+          { "content": "LangChain: loaders, retrievers, chains, LCEL", "children": [] },
+          { "content": "LlamaIndex: indices, query engines, routers", "children": [] },
+          { "content": "Haystack: pipelines, retrievers, document stores", "children": [] },
+          { "content": "Canopy (Pinecone): managed RAG", "children": [] }
+        ] },
+        { "content": "<strong>Resources</strong>", "children": [
+          { "content": "<a href='https://docs.langchain.com/docs/'>LangChain Docs</a>" },
+          { "content": "<a href='https://docs.llamaindex.ai/'>LlamaIndex Docs</a>" },
+          { "content": "<a href='https://www.youtube.com/playlist?list=PLfaIDFEXuae2LXbO1_P85bZ45UyNWL3Jq'>RAG from Scratch</a>" },
+          { "content": "<a href='https://www.pinecone.io/learn/rag/'>Pinecone RAG Guide</a>" },
+          { "content": "<a href='https://github.com/NVIDIA/GenerativeAIExamples'>NVIDIA RAG Examples</a>" }
+        ] }
+      ]
+    },
+    {
+      "content": "3. <strong>Build AI Agents</strong>",
+      "children": [
+        { "content": "<strong>Agent Fundamentals</strong>", "children": [
+          { "content": "LLM reasoning: ReAct, CoT, ToT", "children": [] },
+          { "content": "Tool calling: OpenAI, Anthropic", "children": [] },
+          { "content": "Memory: short-term, long-term, persistent", "children": [] },
+          { "content": "Planning: task decomposition, reflection", "children": [] }
+        ] },
+        { "content": "<strong>Agent Frameworks</strong>", "children": [
+          { "content": "LangGraph: stateful orchestration, cycles", "children": [] },
+          { "content": "AutoGen: multi-agent, code execution", "children": [] },
+          { "content": "CrewAI: role-based agents, crews", "children": [] },
+          { "content": "OpenAI Assistants API", "children": [] },
+          { "content": "Semantic Kernel: plugins, planners", "children": [] }
+        ] },
+        { "content": "<strong>Multi-Agent Systems</strong>", "children": [
+          { "content": "Communication: message passing, shared state", "children": [] },
+          { "content": "Patterns: supervisor, debater, swarm", "children": [] },
+          { "content": "Human-in-the-loop: approval, escalation", "children": [] },
+          { "content": "Guardrails: content filters, validation", "children": [] }
+        ] },
+        { "content": "<strong>Resources</strong>", "children": [
+          { "content": "<a href='https://langchain-ai.github.io/langgraph/'>LangGraph Docs</a>" },
+          { "content": "<a href='https://microsoft.github.io/autogen/'>AutoGen Docs</a>" },
+          { "content": "<a href='https://www.deeplearning.ai/short-courses/'>DeepLearning.AI (Agents)</a>" },
+          { "content": "<a href='https://github.com/crewAIInc/crewAI'>CrewAI GitHub</a>" },
+          { "content": "<a href='https://www.youtube.com/@ai_makerspace'>AI Makerspace</a>" }
+        ] }
+      ]
+    },
+    {
+      "content": "4. <strong>Implement Monitoring</strong>",
+      "children": [
+        { "content": "<strong>LLM Observability</strong>", "children": [
+          { "content": "LangSmith: tracing, evals, playground", "children": [] },
+          { "content": "Weights &amp; Biases: experiment tracking", "children": [] },
+          { "content": "MLflow: tracking, registry, serving", "children": [] },
+          { "content": "Arize / WhyLabs: drift, performance", "children": [] },
+          { "content": "Helicone / LangFuse: cost &amp; latency", "children": [] }
+        ] },
+        { "content": "<strong>Evaluation &amp; Testing</strong>", "children": [
+          { "content": "LLM-as-judge: GPT-4 eval, rubric scoring", "children": [] },
+          { "content": "RAGAS: faithfulness, relevancy metrics", "children": [] },
+          { "content": "DeepEval: unit testing, CI integration", "children": [] },
+          { "content": "Red-teaming: prompt injections, jailbreaks", "children": [] },
+          { "content": "A/B testing: prompts, models, retrieval", "children": [] }
+        ] },
+        { "content": "<strong>Infrastructure Monitoring</strong>", "children": [
+          { "content": "Metrics: latency p50/95/99, tokens/sec, throughput", "children": [] },
+          { "content": "GPU monitoring: DCGM, nvidia-smi", "children": [] },
+          { "content": "Logging: structured logs, OpenTelemetry", "children": [] },
+          { "content": "Alerting: Prometheus + Grafana, PagerDuty", "children": [] },
+          { "content": "Cost tracking: per-request cost, token usage", "children": [] }
+        ] },
+        { "content": "<strong>Resources</strong>", "children": [
+          { "content": "<a href='https://docs.smith.langchain.com/'>LangSmith Docs</a>" },
+          { "content": "<a href='https://docs.ragas.io/'>RAGAS Docs</a>" },
+          { "content": "<a href='https://www.confident-ai.com/blog'>DeepEval Blog</a>" },
+          { "content": "<a href='https://www.evidentlyai.com/'>Evidently AI</a>" },
+          { "content": "<a href='https://docs.helixml.com/'>Helicone Docs</a>" }
+        ] }
+      ]
+    },
+    {
+      "content": "5. <strong>Use Engineering Judgment</strong>",
+      "children": [
+        { "content": "<strong>Architecture Decisions</strong>", "children": [
+          { "content": "RAG vs fine-tuning vs prompt engineering", "children": [] },
+          { "content": "Open-source vs proprietary models", "children": [] },
+          { "content": "Model selection: 7B vs 70B vs 400B", "children": [] },
+          { "content": "Cloud vs on-prem vs hybrid", "children": [] },
+          { "content": "Build vs buy: frameworks vs managed", "children": [] }
+        ] },
+        { "content": "<strong>Production Best Practices</strong>", "children": [
+          { "content": "Caching: semantic (GPTCache), KV-cache", "children": [] },
+          { "content": "Rate limiting, throttling, retry with backoff", "children": [] },
+          { "content": "Fallback chains, graceful degradation", "children": [] },
+          { "content": "Canary deployments, shadow testing", "children": [] },
+          { "content": "Security: PII redaction, prompt injection", "children": [] }
+        ] },
+        { "content": "<strong>Pragmatic Engineering</strong>", "children": [
+          { "content": "Cost opt: prompt compression, distillation", "children": [] },
+          { "content": "Latency opt: streaming, speculative decoding", "children": [] },
+          { "content": "Quality vs speed: simpler vs complex models", "children": [] },
+          { "content": "Start simple: eval-driven improvements", "children": [] },
+          { "content": "Tech debt: prompt fragility, model decay", "children": [] }
+        ] },
+        { "content": "<strong>Resources</strong>", "children": [
+          { "content": "<a href='https://lilianweng.github.io/'>Lil'Log (Lilian Weng)</a>" },
+          { "content": "<a href='https://eugeneyan.com/writing/'>Eugene Yan's Blog</a>" },
+          { "content": "<a href='https://www.oreilly.com/radar/'>O'Reilly AI Radar</a>" },
+          { "content": "<a href='https://github.com/Hannibal046/Awesome-LLM'>Awesome LLM</a>" },
+          { "content": "<a href='https://www.deeplearning.ai/the-batch/'>The Batch (Andrew Ng)</a>" }
+        ] }
+      ]
+    }
+  ] }, null)</script>
+</body>
+</html>

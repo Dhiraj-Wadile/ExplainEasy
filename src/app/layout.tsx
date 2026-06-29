@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
-import { ThemeProvider } from '@/components/shared/theme-provider'
+import { AppThemeProvider } from '@/components/shared/app-theme'
 import { QueryProvider } from '@/components/shared/query-provider'
 import { SessionProvider } from '@/components/shared/session-provider'
 import { AuthProvider } from '@/components/auth/auth-context'
@@ -67,12 +67,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+      <html lang="en" suppressHydrationWarning={true}>
       <head>
         <JsonLd />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <script dangerouslySetInnerHTML={{
+          __html: `(function(){try{var t=localStorage.getItem('theme');document.documentElement.classList.toggle('dark',t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme:dark)').matches));document.documentElement.style.colorScheme=document.documentElement.classList.contains('dark')?'dark':'light'}catch(e){}})();(function(){var orig=console.error;console.error=function(){var m=typeof arguments[0]==='string'?arguments[0]:'';if(m.includes('script tag while rendering')||m.includes('hydrated successfully'))return;return orig.apply(console,arguments)}})()`
+        }} />
+        <AppThemeProvider>
           <SessionProvider>
             <AuthProvider>
               <QueryProvider>
@@ -88,8 +91,8 @@ export default function RootLayout({
               </QueryProvider>
             </AuthProvider>
           </SessionProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+          </AppThemeProvider>
+        </body>
+      </html>
   )
 }

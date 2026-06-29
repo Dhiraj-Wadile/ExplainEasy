@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Java Backend + DevOps Roadmap | 1 YOE → Product Company</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #070b17;
+      color: #e2e8f0;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(56,189,248,0.12), transparent 70%),
+                  radial-gradient(ellipse 60% 50% at 80% 70%, rgba(251,191,36,0.06), transparent 60%),
+                  radial-gradient(ellipse 50% 40% at 20% 80%, rgba(56,189,248,0.05), transparent 50%);
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-image:
+        radial-gradient(1px 1px at 15% 25%, rgba(56,189,248,0.3), transparent),
+        radial-gradient(1px 1px at 35% 70%, rgba(251,191,36,0.15), transparent),
+        radial-gradient(1.5px 1.5px at 55% 12%, rgba(56,189,248,0.25), transparent),
+        radial-gradient(1px 1px at 75% 45%, rgba(251,191,36,0.15), transparent),
+        radial-gradient(1px 1px at 88% 82%, rgba(56,189,248,0.2), transparent),
+        radial-gradient(1.5px 1.5px at 20% 88%, rgba(251,191,36,0.12), transparent),
+        radial-gradient(1px 1px at 65% 92%, rgba(56,189,248,0.15), transparent),
+        radial-gradient(1px 1px at 82% 18%, rgba(251,191,36,0.12), transparent),
+        radial-gradient(1.5px 1.5px at 45% 48%, rgba(56,189,248,0.12), transparent),
+        radial-gradient(1px 1px at 90% 58%, rgba(251,191,36,0.15), transparent);
+      animation: twinkle 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    .banner {
+      position: relative;
+      padding: 28px 30px 22px;
+      text-align: center;
+      border-bottom: 1px solid rgba(56,189,248,0.15);
+      background: linear-gradient(180deg, rgba(12,35,64,0.9) 0%, rgba(7,20,40,0.6) 100%);
+      backdrop-filter: blur(20px);
+    }
+
+    .banner h1 {
+      font-size: 1.8rem;
+      background: linear-gradient(135deg, #7dd3fc, #38bdf8, #0284c7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .banner p {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      font-weight: 400;
+    }
+
+    .banner .exp-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #d97706, #f59e0b);
+      color: #0f172a;
+      padding: 5px 18px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      margin-top: 10px;
+      letter-spacing: 0.03em;
+      box-shadow: 0 0 20px rgba(245,158,11,0.3);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: #38bdf8;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: #7dd3fc; text-decoration: underline; }
+
+    .social-banner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 20px;
+      background: rgba(7,20,40,0.5);
+      border-bottom: 1px solid rgba(56,189,248,0.06);
+    }
+
+    .social-banner a {
+      text-decoration: none;
+      color: #94a3b8;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: 30px;
+      background: rgba(12,35,64,0.6);
+      border: 1px solid rgba(56,189,248,0.08);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.3s ease;
+    }
+
+    .social-banner a:hover {
+      background: linear-gradient(135deg, rgba(56,189,248,0.25), rgba(251,191,36,0.1));
+      border-color: rgba(56,189,248,0.35);
+      color: #e2e8f0;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(56,189,248,0.12);
+    }
+
+    #mindmap {
+      display: block;
+      width: 100vw;
+      height: calc(100vh - 165px);
+      background: transparent;
+    }
+
+    .markmap-foreign {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      color: #e2e8f0 !important;
+      background: rgba(7,20,40,0.8) !important;
+      backdrop-filter: blur(12px) !important;
+      padding: 4px 10px !important;
+      border-radius: 8px !important;
+      border: 1px solid rgba(56,189,248,0.12) !important;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important;
+      transition: all 0.2s ease !important;
+    }
+
+    .markmap-foreign:hover {
+      border-color: rgba(56,189,248,0.35) !important;
+      box-shadow: 0 4px 30px rgba(56,189,248,0.12) !important;
+    }
+
+    .markmap-foreign strong {
+      color: #facc15 !important;
+      font-size: 1.05em;
+    }
+
+    .markmap-foreign a {
+      color: #60a5fa !important;
+      text-decoration: underline;
+      font-weight: 700;
+      font-size: 1em;
+    }
+
+    #mindmap text {
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      fill: #f1f5f9 !important;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+      paint-order: stroke;
+      stroke: #070b17;
+      stroke-width: 2px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    #mindmap path {
+      stroke: url(#lineGradient) !important;
+      stroke-width: 2.5 !important;
+      opacity: 0.7;
+    }
+
+    #mindmap circle {
+      fill: #38bdf8 !important;
+      stroke: #0284c7 !important;
+      stroke-width: 2px !important;
+      filter: drop-shadow(0 0 6px rgba(56,189,248,0.35));
+    }
+
+    #mindmap g:first-child > text {
+      font-size: 22px !important;
+      font-weight: 900 !important;
+      fill: url(#rootGradient) !important;
+    }
+
+    @media (max-width: 640px) {
+      .banner h1 { font-size: 1.3rem; }
+      .banner p { font-size: 0.8rem; }
+      #mindmap { height: calc(100vh - 180px); }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.17.3-alpha.1/dist/style.css" />
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#0284c7" />
+        <stop offset="50%" stop-color="#38bdf8" />
+        <stop offset="100%" stop-color="#f59e0b" />
+      </linearGradient>
+      <linearGradient id="rootGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#7dd3fc" />
+        <stop offset="50%" stop-color="#38bdf8" />
+        <stop offset="100%" stop-color="#0284c7" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="banner">
+    <h1>Java Backend + DevOps Roadmap</h1>
+    <p>C++ DSA &bull; Java + Spring Boot &bull; DevOps &amp; Cloud &bull; System Design &bull; 1 YOE → Product Company</p>
+    <span class="exp-badge">1 YOE LEAP PLAN</span>
+    <br />
+    <a class="back-link" href="/roadmaps">← Back to Roadmaps</a>
+  </div>
+
+  <div class="social-banner">
+    <a href="https://leetcode.com/" target="_blank">LeetCode</a>
+    <a href="https://www.geeksforgeeks.org/" target="_blank">GeeksforGeeks</a>
+    <a href="https://www.java.com/" target="_blank">Java</a>
+    <a href="https://spring.io/" target="_blank">Spring Boot</a>
+    <a href="https://takeuforward.org/" target="_blank">C++ DSA (Striver)</a>
+    <a href="https://aws.amazon.com/free/" target="_blank">AWS Free Tier</a>
+    <a href="https://docs.docker.com/" target="_blank">Docker</a>
+    <a href="https://kubernetes.io/docs/" target="_blank">Kubernetes</a>
+  </div>
+
+  <svg id="mindmap"></svg>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.17.3-alpha.1/dist/browser/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.17.3-alpha.1/dist/index.js"></script>
+  <script>(() => { setTimeout(() => { const { markmap: q, mm: N } = window, j = new q.Toolbar; j.attach(N); const we = j.render(); we.setAttribute("style", "position:absolute;bottom:20px;right:20px"), document.body.append(we) }) })()</script>
+  <script>((u, d, h, f) => { const g = u(); window.mm = g.Markmap.create("svg#mindmap", (d || g.deriveOptions)(f), h) })(() => window.markmap, null, { "content": "7-Month Roadmap: 1 YOE → Product-Based Company (C++ DSA + Java Backend)", "children": [
+    {
+      "content": "Phase 1: <strong>Core Java + C++ DSA</strong> (Months 1-2)",
+      "children": [
+        { "content": "<strong>Core Java Deep Dive</strong>", "children": [
+          { "content": "Collections: List, Set, Map, Queue, Concurrent", "children": [] },
+          { "content": "Multithreading: Thread, Executors, Lock API", "children": [] },
+          { "content": "JVM Internals: Memory Model, GC, ClassLoader", "children": [] },
+          { "content": "Java 8+: Streams, Lambdas, Optional, Functional", "children": [] },
+          { "content": "Exception handling, Generics, Annotations", "children": [] },
+          { "content": "IO &amp; NIO: File handling, Serialization", "children": [] }
+        ] },
+        { "content": "<strong>DSA for Interviews</strong>", "children": [
+          { "content": "Arrays &amp; Strings: Two pointers, Sliding Window", "children": [] },
+          { "content": "Linked Lists: Reversal, Cycle detection, Merge", "children": [] },
+          { "content": "Stacks &amp; Queues: Monotonic stack, Deque", "children": [] },
+          { "content": "Trees: BST, LCA, Level order, Serialize", "children": [] },
+          { "content": "Graphs: BFS, DFS, Topological Sort, Dijkstra", "children": [] },
+          { "content": "DP: Fibonacci, Knapsack, LCS, LIS, Grid DP", "children": [] },
+          { "content": "Practice: 2 Easy + 2 Medium LeetCode daily", "children": [] }
+        ] },
+        { "content": "<strong>Resources</strong>", "children": [
+          { "content": "<a href='https://www.youtube.com/playlist?list=PLDzeHZWIZsTryvtXdMr6rPh4IDexB5NIA'>C++ DSA (Love Babbar)</a>" },
+          { "content": "<a href='https://www.youtube.com/playlist?list=PLgUwDviBIf0oF6QL8m22w1hIDC1VDJm3D'>C++ DSA (Striver)</a>" },
+          { "content": "<a href='https://leetcode.com/'>LeetCode - Solve in C++</a>" },
+          { "content": "<a href='https://www.udemy.com/course/java-the-complete-java-developer-course/'>Java Masterclass (Buchalka)</a>" },
+          { "content": "Book: Effective Java (Joshua Bloch)" }
+        ] }
+      ]
+    },
+    {
+      "content": "Phase 2: <strong>Backend with Java</strong> (Months 2-4)",
+      "children": [
+        { "content": "<strong>Spring Boot Ecosystem</strong>", "children": [
+          { "content": "Core: IoC, DI, Bean Lifecycle, Configuration", "children": [] },
+          { "content": "Boot: Auto-config, Starters, Actuator, Profiles", "children": [] },
+          { "content": "JPA &amp; Hibernate: ORM, mappings, JPQL, Caching", "children": [] },
+          { "content": "Security: Auth, JWT, OAuth2, Role-based access", "children": [] },
+          { "content": "REST API: Controllers, DTOs, Validation, Versioning", "children": [] },
+          { "content": "AOP: Cross-cutting concerns (logging, tx)", "children": [] }
+        ] },
+        { "content": "<strong>Databases &amp; Caching</strong>", "children": [
+          { "content": "SQL: Joins, Indexing, EXPLAIN plans, HikariCP", "children": [] },
+          { "content": "NoSQL: MongoDB, Document model, Aggregation", "children": [] },
+          { "content": "Redis: Caching (TTL, LRU), Distributed locks", "children": [] },
+          { "content": "Flyway / Liquibase: DB migrations", "children": [] }
+        ] },
+        { "content": "<strong>Build a Project</strong>", "children": [
+          { "content": "REST API: E-Commerce/Blog with auth + pagination", "children": [] },
+          { "content": "Stack: Spring Boot + JPA + PostgreSQL + Redis + JWT", "children": [] },
+          { "content": "Testing: JUnit 5, Mockito, integration tests", "children": [] },
+          { "content": "Dockerize the app (Dockerfile + compose)", "children": [] }
+        ] },
+        { "content": "<strong>Resources</strong>", "children": [
+          { "content": "<a href='https://www.youtube.com/playlist?list=PLA3GkZPJjfeXo0eju2j5DqYloBjlRJm9'>Spring Boot (Amigoscode)</a>" },
+          { "content": "<a href='https://spring.io/guides'>Spring Official Guides</a>" },
+          { "content": "<a href='https://www.udemy.com/course/spring-hibernate-tutorial/'>Spring &amp; Hibernate (Chad Darby)</a>" },
+          { "content": "Book: Spring Boot in Action" }
+        ] }
+      ]
+    },
+    {
+      "content": "Phase 3: <strong>DevOps &amp; Cloud</strong> (Months 3-5)",
+      "children": [
+        { "content": "<strong>Linux &amp; Scripting</strong>", "children": [
+          { "content": "Linux: Filesystem, Permissions, grep, awk, sed", "children": [] },
+          { "content": "Shell Scripting: variables, loops, functions", "children": [] },
+          { "content": "Networking: curl, netstat, DNS, HTTP basics", "children": [] }
+        ] },
+        { "content": "<strong>Containerization &amp; Orchestration</strong>", "children": [
+          { "content": "Docker: Images, volumes, networks, multi-stage", "children": [] },
+          { "content": "Compose: Multi-service (app + db + cache)", "children": [] },
+          { "content": "Kubernetes: Pods, Deployments, Services, Helm", "children": [] },
+          { "content": "minikube / kind: Local K8s practice", "children": [] }
+        ] },
+        { "content": "<strong>CI/CD &amp; IaC</strong>", "children": [
+          { "content": "Jenkins: Pipeline as code, plugins", "children": [] },
+          { "content": "GitHub Actions: YAML workflows, runners", "children": [] },
+          { "content": "GitLab CI: stages, artifacts", "children": [] },
+          { "content": "Terraform: IaC, providers, state, modules", "children": [] },
+          { "content": "Ansible: Configuration management", "children": [] }
+        ] },
+        { "content": "<strong>AWS Cloud</strong>", "children": [
+          { "content": "Core: EC2, S3, RDS, VPC, IAM, Security Groups", "children": [] },
+          { "content": "Compute: Beanstalk, ECS / EKS (Fargate)", "children": [] },
+          { "content": "Serverless: Lambda, API Gateway, DynamoDB", "children": [] },
+          { "content": "Monitoring: CloudWatch, Prometheus, Grafana", "children": [] }
+        ] },
+        { "content": "<strong>Resources</strong>", "children": [
+          { "content": "<a href='https://www.youtube.com/playlist?list=PLdpzxOOAlwvIKMhk8WhzN1pYoJ1YUwCz'>Docker (TechWorld Nana)</a>" },
+          { "content": "<a href='https://www.youtube.com/playlist?list=PLdpzxOOAlwvLvnjC9yiui3L9I8aZgFhc'>K8s (TechWorld Nana)</a>" },
+          { "content": "<a href='https://www.youtube.com/playlist?list=PL7iMyoQPMtAP7XeXabzRfq6k9k3C7hCgV'>AWS SA (FreeCodeCamp)</a>" },
+          { "content": "<a href='https://play-with-docker.com/'>Play with Docker</a>" }
+        ] }
+      ]
+    },
+    {
+      "content": "Phase 4: <strong>System Design</strong> (Months 4-6)",
+      "children": [
+        { "content": "<strong>Low Level Design</strong>", "children": [
+          { "content": "SOLID Principles with Java examples", "children": [] },
+          { "content": "Patterns: Singleton, Factory, Builder, Strategy", "children": [] },
+          { "content": "LLD Problems: Parking Lot, Vending Machine, Logger", "children": [] },
+          { "content": "UML diagrams, OOPs, Interface segregation", "children": [] }
+        ] },
+        { "content": "<strong>High Level Design</strong>", "children": [
+          { "content": "Scalability: Horizontal vs Vertical, CDN, LB", "children": [] },
+          { "content": "Caching: Redis, Memcached, eviction policies", "children": [] },
+          { "content": "Queues: Kafka, RabbitMQ, topics, partitions", "children": [] },
+          { "content": "Database: Sharding, Replication, CAP Theorem", "children": [] },
+          { "content": "Microservices: Discovery, Gateway, Circuit Breaker", "children": [] }
+        ] },
+        { "content": "<strong>Resources</strong>", "children": [
+          { "content": "<a href='https://github.com/kumaransg/LLD'>LLD GitHub (Kumaransg)</a>" },
+          { "content": "<a href='https://www.youtube.com/playlist?list=PLTCrU9sGyburBw9wNOHebv9S2eiJ7Wq0m'>System Design (Gaurav Sen)</a>" },
+          { "content": "<a href='https://github.com/donnemartin/system-design-primer'>System Design Primer</a>" },
+          { "content": "Book: Head First Design Patterns" }
+        ] }
+      ]
+    },
+    {
+      "content": "Phase 5: <strong>Interview Prep</strong> (Months 5-7)",
+      "children": [
+        { "content": "<strong>Resume Optimization</strong>", "children": [
+          { "content": "Quantify: Reduced latency X%, Saved Y hours", "children": [] },
+          { "content": "Keywords: Java, Spring Boot, Docker, AWS, CI/CD", "children": [] },
+          { "content": "GitHub project links with README", "children": [] },
+          { "content": "1-page clean ATS-friendly format", "children": [] }
+        ] },
+        { "content": "<strong>Mock Interviews</strong>", "children": [
+          { "content": "DSA: 2 Medium + 1 Hard daily (final month)", "children": [] },
+          { "content": "LLD: 10+ problems on whiteboard", "children": [] },
+          { "content": "HLD: URL Shortener, Chat System, Rate Limiter", "children": [] },
+          { "content": "Behavioral: STAR method for each experience", "children": [] },
+          { "content": "Java/Spring: DI, Bean scopes, Transactions", "children": [] }
+        ] },
+        { "content": "<strong>Target Companies</strong>", "children": [
+          { "content": "SDE-1: Amazon, Microsoft, Flipkart, Uber, Swiggy", "children": [] },
+          { "content": "Backend: Cred, Groww, PhonePe, Postman, Atlassian", "children": [] },
+          { "content": "DevOps/SRE: Intuit, Adobe, Cisco, Dell, VMware", "children": [] },
+          { "content": "Product-based startups with good engineering", "children": [] }
+        ] },
+        { "content": "<strong>Resources</strong>", "children": [
+          { "content": "<a href='https://www.pramp.com/'>Pramp (Free Mock Interviews)</a>" },
+          { "content": "<a href='https://www.interviewing.io/'>Interviewing.io</a>" },
+          { "content": "<a href='https://resumeworded.com/'>Resume Worded (Free Score)</a>" },
+          { "content": "Book: Cracking the Coding Interview" }
+        ] }
+      ]
+    },
+    {
+      "content": "Phase 6: <strong>Continuous Growth</strong> (Ongoing)",
+      "children": [
+        { "content": "<strong>Version Control</strong>", "children": [
+          { "content": "Git: branching, rebase vs merge, cherry-pick", "children": [] },
+          { "content": "Code Review best practices", "children": [] }
+        ] },
+        { "content": "<strong>Open Source &amp; Community</strong>", "children": [
+          { "content": "Contribute to Spring Boot, K8s, Java projects", "children": [] },
+          { "content": "Write blogs on Medium / Dev.to / Hashnode", "children": [] },
+          { "content": "Build LinkedIn/Twitter presence", "children": [] }
+        ] },
+        { "content": "<strong>Stay Updated</strong>", "children": [
+          { "content": "Follow: Baeldung, InfoQ, DZone, TheNewStack", "children": [] },
+          { "content": "Podcasts: SE Daily, Kubernetes Podcast", "children": [] },
+          { "content": "Certs: AWS Developer, CKAD, CKA (optional)", "children": [] }
+        ] },
+        { "content": "<strong>Resources</strong>", "children": [
+          { "content": "<a href='https://opensource.guide/'>Open Source Guides</a>" },
+          { "content": "<a href='https://www.baeldung.com/'>Baeldung (Java &amp; Spring)</a>" }
+        ] }
+      ]
+    }
+  ] }, null)</script>
+</body>
+</html>

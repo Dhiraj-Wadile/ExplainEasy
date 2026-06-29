@@ -42,6 +42,8 @@ model User {
   achievements      Achievement[]
   recentlyViewed    RecentlyViewed[]
   createdConcepts   Concept[]
+  progress          Progress[]
+  interests         UserInterest[]
 
   @@index([email])
   @@index([role])
@@ -466,6 +468,34 @@ model CaseStudy {
 
   @@index([featured])
   @@map("case_studies")
+}
+
+model Progress {
+  id        String   @id @default(cuid())
+  userId    String
+  conceptSlug String
+  completed Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, conceptSlug])
+  @@index([userId])
+  @@index([conceptSlug])
+  @@map("progress")
+}
+
+model UserInterest {
+  id        String   @id @default(cuid())
+  userId    String
+  category  String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, category])
+  @@index([userId])
+  @@map("user_interests")
 }
 
 model NewsletterSubscriber {
