@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { MessageCircle, X, Send, Bot, User, Sparkles, BookOpen, Trash2 } from 'lucide-react'
+import { MessageCircle, X, Send, Bot, User, BookOpen, Trash2 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useChatContext, useChatHistory } from '@/lib/store'
 
@@ -60,26 +60,15 @@ export function ChatBot() {
   const { concept } = useChatContext()
   const { history, addMessage, clearHistory } = useChatHistory()
   const [open, setOpen] = useState(false)
-  const [messages, setMessages] = useState<Message[]>([])
-  const [initialized, setInitialized] = useState(false)
-
-  useEffect(() => {
-    if (initialized) return
-    setInitialized(true)
-
-    if (history.length > 0) {
-      setMessages(history)
-    } else {
-      setMessages([
-        {
-          role: 'assistant',
-          content: concept
-            ? `Hi! I'm ExplainEasy AI. Ask me about ${concept.name} — I can simplify it, give examples, or compare it with related concepts.`
-            : `Hi! I'm ExplainEasy AI. Ask me about business, finance, startups, or tech concepts. I keep answers short and to the point.`,
-        },
-      ])
-    }
-  }, [concept?.slug]) // eslint-disable-line react-hooks/exhaustive-deps
+  const [messages, setMessages] = useState<Message[]>(() => {
+    if (history.length > 0) return history
+    return [{
+      role: 'assistant',
+      content: concept
+        ? `Hi! I'm ExplainEasy AI. Ask me about ${concept.name} — I can simplify it, give examples, or compare it with related concepts.`
+        : `Hi! I'm ExplainEasy AI. Ask me about business, finance, startups, or tech concepts. I keep answers short and to the point.`,
+    }]
+  })
 
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
