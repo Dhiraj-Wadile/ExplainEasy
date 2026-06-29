@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { generateChatResponseStream } from '@/lib/openai'
-import { searchTerms, getTermBySlug, allTerms } from '@/data/index'
+import { getTermBySlug, allTerms } from '@/data/index'
 import type { Concept } from '@/types'
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 

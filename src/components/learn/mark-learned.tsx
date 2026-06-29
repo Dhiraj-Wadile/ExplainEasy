@@ -14,7 +14,6 @@ export function MarkLearned({ conceptSlug }: MarkLearnedProps) {
   const router = useRouter()
   const [learned, setLearned] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [learnedSlugs, setLearnedSlugs] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     if (!isAuthenticated) return
@@ -22,7 +21,6 @@ export function MarkLearned({ conceptSlug }: MarkLearnedProps) {
       .then((res) => res.json())
       .then((data) => {
         if (data.progress) {
-          setLearnedSlugs(new Set(data.progress))
           setLearned(data.progress.includes(conceptSlug))
         }
       })
@@ -45,7 +43,6 @@ export function MarkLearned({ conceptSlug }: MarkLearnedProps) {
         })
         if (res.ok) {
           setLearned(false)
-          setLearnedSlugs((prev) => { const next = new Set(prev); next.delete(conceptSlug); return next })
         }
       } else {
         const res = await fetch('/api/progress/mark-learned', {
@@ -55,7 +52,6 @@ export function MarkLearned({ conceptSlug }: MarkLearnedProps) {
         })
         if (res.ok) {
           setLearned(true)
-          setLearnedSlugs((prev) => new Set(prev).add(conceptSlug))
         }
       }
     } catch {

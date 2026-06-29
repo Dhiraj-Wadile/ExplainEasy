@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useSyncExternalStore } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X, Lightbulb, LogIn } from 'lucide-react'
@@ -35,11 +35,9 @@ const sharedLinks = [
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
   const { data: session } = useSession()
-
-  useEffect(() => { setMounted(true) }, [])
+  const mounted = useSyncExternalStore(() => () => {}, () => true, () => false)
 
   const navLinks = mounted
     ? [...sharedLinks, { label: 'Dashboard', href: '/dashboard' }]
@@ -107,7 +105,7 @@ export function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  onClick={() => { setMobileOpen(false); setMounted(true) }}
+                  onClick={() => setMobileOpen(false)}
                   className={cn(
                     'flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
                     pathname === link.href

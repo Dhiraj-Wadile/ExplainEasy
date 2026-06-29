@@ -22,7 +22,7 @@ function generateQuiz(conceptSlug: string) {
       const words = keySentence.split(' ').filter((w) => w.length > 4)
       if (words.length > 2) {
         const answerWord = words[Math.floor(words.length / 2)]
-        const wrongOptions = generateWrongOptions(answerWord, concept)
+        const wrongOptions = generateWrongOptions(answerWord)
         questions.push({
           id: `${conceptSlug}-q1`,
           question: `What is the best definition of ${concept.name}?`,
@@ -120,7 +120,7 @@ function generateQuiz(conceptSlug: string) {
   return questions.slice(0, 5)
 }
 
-function generateWrongOptions(answerWord: string, concept: { name: string; tags?: string[]; category?: string }) {
+function generateWrongOptions(answerWord: string) {
   const pool = [
     'a method of calculating depreciation',
     'a framework for market analysis',

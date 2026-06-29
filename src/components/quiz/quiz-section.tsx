@@ -21,6 +21,33 @@ interface QuizSectionProps {
 export function QuizSection({ conceptSlug, conceptName }: QuizSectionProps) {
   const { isAuthenticated } = useAuth()
   const router = useRouter()
+  const [retry, setRetry] = useState(0)
+
+  return (
+    <QuizContent
+      key={`${conceptSlug}-${retry}`}
+      conceptSlug={conceptSlug}
+      conceptName={conceptName}
+      isAuthenticated={isAuthenticated}
+      router={router}
+      onRetry={() => setRetry((c) => c + 1)}
+    />
+  )
+}
+
+function QuizContent({
+  conceptSlug,
+  conceptName,
+  isAuthenticated,
+  router,
+  onRetry,
+}: {
+  conceptSlug: string
+  conceptName: string
+  isAuthenticated: boolean
+  router: ReturnType<typeof useRouter>
+  onRetry: () => void
+}) {
   const [questions, setQuestions] = useState<Question[]>([])
   const [loading, setLoading] = useState(true)
   const [answers, setAnswers] = useState<Record<string, number>>({})
@@ -30,26 +57,15 @@ export function QuizSection({ conceptSlug, conceptName }: QuizSectionProps) {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    loadQuiz()
+    fetch(`/api/quiz/${conceptSlug}`)
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to load quiz')
+        return res.json()
+      })
+      .then((data) => setQuestions(data.questions || []))
+      .catch(() => setError('Could not load quiz questions'))
+      .finally(() => setLoading(false))
   }, [conceptSlug])
-
-  async function loadQuiz() {
-    setLoading(true)
-    setError('')
-    setAnswers({})
-    setSubmitted(false)
-    setScore(0)
-    try {
-      const res = await fetch(`/api/quiz/${conceptSlug}`)
-      if (!res.ok) throw new Error('Failed to load quiz')
-      const data = await res.json()
-      setQuestions(data.questions || [])
-    } catch {
-      setError('Could not load quiz questions')
-    } finally {
-      setLoading(false)
-    }
-  }
 
   function handleAnswer(questionId: string, optionIndex: number) {
     if (submitted) return
@@ -105,7 +121,7 @@ export function QuizSection({ conceptSlug, conceptName }: QuizSectionProps) {
     return (
       <div className="rounded-2xl border border-border p-8 text-center">
         <p className="text-muted-foreground">{error}</p>
-        <button onClick={loadQuiz} className="mt-3 text-sm text-primary hover:underline">
+        <button onClick={onRetry} className="mt-3 text-sm text-primary hover:underline">
           Try again
         </button>
       </div>
@@ -166,7 +182,7 @@ export function QuizSection({ conceptSlug, conceptName }: QuizSectionProps) {
           </div>
 
           <button
-            onClick={loadQuiz}
+            onClick={onRetry}
             className="flex items-center gap-2 mx-auto text-sm text-primary hover:underline"
           >
             <RefreshCw className="w-4 h-4" />

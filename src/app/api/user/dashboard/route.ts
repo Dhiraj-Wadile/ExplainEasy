@@ -17,11 +17,6 @@ export async function GET() {
       where: { userId: session.user.id, completed: true },
     })
 
-    const bookmarks = await prisma.favorite.findMany({
-      where: { userId: session.user.id },
-      select: { conceptId: false, createdAt: true },
-    })
-
     const bookmarkCount = await prisma.favorite.count({
       where: { userId: session.user.id },
     })
@@ -39,11 +34,6 @@ export async function GET() {
     const avgScore = quizResults.length > 0
       ? Math.round(quizResults.reduce((sum, r) => sum + (r.score / r.totalQuestions) * 100, 0) / quizResults.length)
       : 0
-
-    const lastStreak = await prisma.learningStreak.findFirst({
-      where: { userId: session.user.id },
-      orderBy: { date: 'desc' },
-    })
 
     const recentStreaks = await prisma.learningStreak.findMany({
       where: { userId: session.user.id },

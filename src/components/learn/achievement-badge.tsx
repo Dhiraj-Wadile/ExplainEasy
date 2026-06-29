@@ -1,6 +1,6 @@
 'use client'
 
-import { Trophy, Zap, BookOpen, Star, Target, Flame, Brain, Sparkles } from 'lucide-react'
+import { Trophy, Zap, BookOpen, Star, Target, Flame, Brain } from 'lucide-react'
 
 const achievementConfig: Record<string, { icon: typeof Trophy; label: string; color: string }> = {
   'first-quiz': { icon: Star, label: 'First Quiz', color: 'text-amber-500' },

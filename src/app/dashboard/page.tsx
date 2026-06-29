@@ -2,16 +2,17 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useAuth } from '@/components/auth/auth-context'
 import {
-  BookOpen, ChevronRight, Flame, Trophy, Brain, BarChart3, ArrowLeft,
-  Target, Zap, Sparkles, Clock, CheckCircle2, Star, BookMarked
+  BookOpen, ChevronRight, Flame, Trophy, Brain, BarChart3,
+  Target, Zap, Sparkles, Clock, Star, BookMarked
 } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { FadeInUp, StaggerContainer, StaggerItem } from '@/components/shared/motion'
 import { AchievementBadge } from '@/components/learn/achievement-badge'
-import { allTerms, getTermBySlug } from '@/data'
+import { getTermBySlug } from '@/data'
 import { Skeleton } from '@/components/ui/skeleton'
 
 interface DashboardData {
@@ -32,15 +33,10 @@ interface DashboardData {
 export default function DashboardPage() {
   const { isAuthenticated, isLoading, user } = useAuth()
   const [data, setData] = useState<DashboardData | null>(null)
-  const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
   useEffect(() => {
-    if (isLoading) return
-    if (!isAuthenticated) {
-      setLoading(false)
-      return
-    }
+    if (isLoading || !isAuthenticated) return
     fetch('/api/user/dashboard')
       .then((r) => r.json())
       .then((d) => {
@@ -48,10 +44,9 @@ export default function DashboardPage() {
         setData(d)
       })
       .catch((e) => setError(e.message))
-      .finally(() => setLoading(false))
   }, [isAuthenticated, isLoading])
 
-  if (isLoading || loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen section-padding">
         <div className="max-w-5xl mx-auto px-4 space-y-6">
@@ -111,7 +106,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-4 mb-8">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center">
               {user?.image ? (
-                <img src={user.image} alt="" className="w-14 h-14 rounded-2xl" />
+                <Image src={user.image} alt="" width={56} height={56} className="rounded-2xl" />
               ) : (
                 <BarChart3 className="w-7 h-7 text-primary" />
               )}

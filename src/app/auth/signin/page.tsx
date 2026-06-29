@@ -18,7 +18,7 @@ export default function SignInPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [success, setSuccess] = useState(() => {
+  const [success] = useState(() => {
     return searchParams.get('verified') === 'true' ? 'Email verified! You can now sign in.' : ''
   })
   const [error, setError] = useState(() => {

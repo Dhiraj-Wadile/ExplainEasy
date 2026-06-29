@@ -13,19 +13,13 @@ const ThemeCtx = createContext<ThemeContext>({ theme: 'dark', setTheme: () => {}
 
 export const useThemeCtx = () => useContext(ThemeCtx)
 
-function getInitialTheme(): Theme {
-  if (typeof window === 'undefined') return 'dark'
-  const stored = localStorage.getItem('theme')
-  if (stored === 'light' || stored === 'dark') return stored
-  return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-}
-
 export function AppThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('dark')
-
-  useEffect(() => {
-    setThemeState(getInitialTheme())
-  }, [])
+  const [theme, setThemeState] = useState<Theme>(() => {
+    if (typeof window === 'undefined') return 'dark'
+    const stored = localStorage.getItem('theme')
+    if (stored === 'light' || stored === 'dark') return stored
+    return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  })
 
   const setTheme = useCallback((t: Theme) => {
     setThemeState(t)
