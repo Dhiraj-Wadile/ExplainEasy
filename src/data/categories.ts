@@ -2,7 +2,7 @@ import { Category } from '@/types'
 
 export const categories: Category[] = [
   { id: '1', slug: 'ai-explained', name: 'AI Explained', description: 'Learn about Artificial Intelligence, LLMs, Machine Learning, and cutting-edge AI concepts in simple terms', icon: 'Brain', color: 'violet', featured: true, termCount: 24 },
-  { id: '2', slug: 'tech-explained', name: 'Tech Explained', description: 'Understand how modern technology works - APIs, Docker, Cloud Computing, and more', icon: 'Cpu', color: 'cyan', featured: true, termCount: 20 },
+  { id: '2', slug: 'tech-explained', name: 'Tech Explained', description: 'Understand how modern technology works - APIs, Docker, Cloud Computing, and more', icon: 'Cpu', color: 'cyan', featured: true, termCount: 22 },
   { id: '3', slug: 'business-basics', name: 'Business Basics', description: 'Foundation concepts for understanding how businesses operate and succeed', icon: 'Building2', color: 'blue', featured: true, termCount: 56 },
   { id: '4', slug: 'finance', name: 'Finance', description: 'Key financial concepts, metrics, and principles explained simply', icon: 'TrendingUp', color: 'emerald', featured: true, termCount: 46 },
   { id: '5', slug: 'startup', name: 'Startup', description: 'Essential concepts for launching and growing a successful startup', icon: 'Rocket', color: 'purple', featured: true, termCount: 45 },

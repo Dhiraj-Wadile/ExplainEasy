@@ -4,8 +4,12 @@
   "outputDirectory": ".next",
   "crons": [
     {
+      "path": "/api/cron/daily-concept",
+      "schedule": "30 0 * * *"
+    },
+    {
       "path": "/api/cron/newsletter",
-      "schedule": "0 6 * * *"
+      "schedule": "0 12 * * 1"
     }
   ]
 }

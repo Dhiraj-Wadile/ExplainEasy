@@ -83,5 +83,5 @@ export interface GlossaryFilters {
   search: string
   category: string
   difficulty: string
-  sortBy: 'name' | 'category' | 'difficulty'
+  sortBy: 'relevance' | 'name' | 'category' | 'difficulty'
 }

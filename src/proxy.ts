@@ -19,6 +19,9 @@ export default withAuth(
       if (!token) {
         return NextResponse.redirect(new URL('/auth/signin?callbackUrl=/admin', req.url))
       }
+      if (token.role !== 'ADMIN') {
+        return NextResponse.redirect(new URL('/dashboard', req.url))
+      }
       if (pathname === '/admin/dashboard') {
         return NextResponse.redirect(new URL('/admin', req.url))
       }

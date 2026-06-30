@@ -73,6 +73,19 @@ export const authOptions: NextAuthOptions = {
           console.error('[AUTH] Failed to update role after OAuth:', err)
         }
       }
+      if (!user && token.sub) {
+        try {
+          const dbUser = await prisma.user.findUnique({
+            where: { id: token.sub },
+            select: { role: true },
+          })
+          if (dbUser) {
+            token.role = dbUser.role
+          }
+        } catch (err) {
+          console.error('[AUTH] Failed to fetch role from DB:', err)
+        }
+      }
       return token
     },
     async session({ session, token }) {

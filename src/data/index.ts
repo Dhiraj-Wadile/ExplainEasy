@@ -14,6 +14,7 @@ import { aiTerms } from './terms/ai'
 import { techTerms } from './terms/technology'
 import { howThingsWorkTerms } from './terms/how-things-work'
 import { caseStudyTerms } from './terms/case-studies'
+import { newConcepts } from './terms/new-concepts'
 
 export const allTerms: Concept[] = [
   ...aiTerms,
@@ -31,6 +32,7 @@ export const allTerms: Concept[] = [
   ...howThingsWorkTerms,
   ...caseStudyTerms,
   ...negotiationTerms,
+  ...newConcepts,
 ]
 
 export const popularTerms = allTerms.filter((t) => t.popular)
@@ -99,4 +101,5 @@ export {
   howThingsWorkTerms,
   caseStudyTerms,
   negotiationTerms,
+  newConcepts,
 }

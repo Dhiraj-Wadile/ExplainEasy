@@ -1,0 +1,30 @@
+name: Daily Cron Jobs
+
+on:
+  schedule:
+    - cron: '30 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  daily-concept:
+    name: Send Daily Concept Email
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger daily concept cron
+        run: |
+          curl -X GET "https://explaineasy.com/api/cron/daily-concept" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "User-Agent: Cron-Job/1.0" \
+            --max-time 300
+
+  weekly-newsletter:
+    if: github.event_name == 'schedule' && github.event.schedule == '30 0 * * *'
+    name: Send Weekly Newsletter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger newsletter cron
+        run: |
+          curl -X GET "https://explaineasy.com/api/cron/newsletter" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "User-Agent: Cron-Job/1.0" \
+            --max-time 300
