@@ -4,6 +4,20 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
+async function safeDb<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
+  try {
+    return await fn()
+  } catch (err) {
+    console.error('[QUIZ] DB operation failed:', err)
+    return fallback
+  }
+}
+
+function getTodayUTC(): Date {
+  const now = new Date()
+  return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()))
+}
+
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions)
   if (!session?.user?.id) {
@@ -28,47 +42,55 @@ export async function POST(request: Request) {
       return { questionId: q.id, correct: isCorrect, correctAnswer: q.correctAnswer }
     })
 
-    await prisma.quizResult.create({
-      data: {
-        userId: session.user.id,
-        score,
-        totalQuestions: questions.length,
-      },
+    // Primary: save quiz result (this is the critical operation)
+    const quizSave = await safeDb(
+      () =>
+        prisma.quizResult.create({
+          data: {
+            userId: session.user.id,
+            score,
+            totalQuestions: questions.length,
+          },
+        }),
+      null
+    )
+
+    // Secondary: update learning streak (non-blocking)
+    const today = getTodayUTC()
+    safeDb(
+      () =>
+        prisma.learningStreak.upsert({
+          where: { userId_date: { userId: session.user.id, date: today } },
+          update: { count: { increment: 1 } },
+          create: { userId: session.user.id, date: today, count: 1 },
+        }),
+      null
+    ).catch(() => {})
+
+    // Secondary: check and award achievements (non-blocking)
+    safeDb(() => checkAndAwardAchievements(session.user.id), undefined).catch(() => {})
+
+    return NextResponse.json({
+      score,
+      total: questions.length,
+      results,
+      saved: quizSave !== null,
     })
-
-    await prisma.learningStreak.upsert({
-      where: {
-        userId_date: {
-          userId: session.user.id,
-          date: new Date(new Date().setHours(0, 0, 0, 0)),
-        },
-      },
-      update: { count: { increment: 1 } },
-      create: {
-        userId: session.user.id,
-        date: new Date(new Date().setHours(0, 0, 0, 0)),
-        count: 1,
-      },
-    })
-
-    await checkAndAwardAchievements(session.user.id)
-
-    return NextResponse.json({ score, total: questions.length, results })
-  } catch {
+  } catch (err) {
+    console.error('[QUIZ] Submit error:', err)
     return NextResponse.json({ error: 'Failed to submit quiz' }, { status: 500 })
   }
 }
 
 async function checkAndAwardAchievements(userId: string) {
-  const existing = await prisma.achievement.findMany({
-    where: { userId },
-    select: { type: true },
-  })
-  const existingTypes = new Set(existing.map((a) => a.type))
+  const [existing, quizCount, streakCount, progressCount] = await Promise.all([
+    prisma.achievement.findMany({ where: { userId }, select: { type: true } }),
+    prisma.quizResult.count({ where: { userId } }).catch(() => 0),
+    prisma.learningStreak.count({ where: { userId } }).catch(() => 0),
+    prisma.progress.count({ where: { userId, completed: true } }).catch(() => 0),
+  ])
 
-  const quizCount = await prisma.quizResult.count({ where: { userId } })
-  const streakCount = await prisma.learningStreak.count({ where: { userId } })
-  const progressCount = await prisma.progress.count({ where: { userId, completed: true } })
+  const existingTypes = new Set(existing.map((a) => a.type))
 
   const newAchievements: { type: string; title: string; description: string }[] = []
 
