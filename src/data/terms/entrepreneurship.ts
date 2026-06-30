@@ -280,7 +280,6 @@ export const entrepreneurshipTerms: Concept[] = [
     createdAt: '2025-01-07T00:00:00.000Z',
   },
 
-
   {
     id: 'entrepreneurship-8',
     slug: 'ceo',
@@ -596,7 +595,6 @@ export const entrepreneurshipTerms: Concept[] = [
     createdAt: '2025-01-15T00:00:00.000Z',
   },
 
-
   {
     id: 'entrepreneurship-16',
     slug: 'pitch-deck',
@@ -910,7 +908,6 @@ export const entrepreneurshipTerms: Concept[] = [
     createdAt: '2025-01-23T00:00:00.000Z',
   },
 
-
   {
     id: 'entrepreneurship-24',
     slug: 'problem-solution-fit',
@@ -948,46 +945,6 @@ export const entrepreneurshipTerms: Concept[] = [
     featured: false,
     popular: false,
     createdAt: '2025-01-24T00:00:00.000Z',
-  },
-
-  {
-    id: 'entrepreneurship-25',
-    slug: 'product-market-fit',
-    name: 'Product-Market Fit',
-    category: 'Entrepreneurship',
-    subcategory: 'Growth',
-    definition: 'Product-Market Fit (PMF) is the degree to which a product satisfies strong market demand. Coined by Marc Andreessen, PMF is the moment a startup finally builds a product that resonates with a large enough audience. It is when customers buy the product as fast as you can make it and usage growth is driven by word-of-mouth.',
-    simpleExplanation: 'Product-Market Fit means you have built something people truly want and actively seek out.',
-    example: 'Slack achieved PMF when they saw 8,000 companies sign up within two weeks of launch without any paid marketing. Growth was purely organic, customer retention was high, and the product spread through teams inviting each other.',
-    whyItMatters: 'Before PMF, startups search for a viable model. After PMF, they execute to scale. Most startups fail because they never reach PMF. The Sean Ellis survey asks: How would you feel if you could no longer use the product? 40%+ very disappointed indicates strong PMF.',
-    relatedTerms: ['problem-solution-fit', 'pivot', 'mvp', 'lean-startup', 'growth', 'traction'],
-    interviewQuestions: [
-      'How do you measure Product-Market Fit quantitatively?',
-      'What is the Sean Ellis test?',
-      'What are leading indicators of PMF?',
-      'How do you know when to pivot vs persevere?',
-      'What happens after achieving PMF?',
-    ],
-    sharkTankExample: 'Bombas socks had strong PMF before Shark Tank with 50,000+ pairs sold and 25% repeat purchase rate. Daymond John recognized this and invested. Bombas became one of the most successful Shark Tank companies.',
-    realCompanyExample: 'Airbnb struggled for years. The turning point was when the founders personally photographed listings in New York, bookings doubled. This revealed the real problem (bad photos) and fixed it, achieving PMF.',
-    faqs: [
-      { question: 'What are the metrics of PMF?', answer: '40%+ very disappointed in Sean Ellis survey, organic growth >20% MoM, NPS >40, low churn.' },
-      { question: 'How long does it take to achieve PMF?', answer: '6-24 months on average for successful startups.' },
-      { question: 'Can you achieve PMF and still fail?', answer: 'Yes. Poor business model, insufficient funding, or execution failures can kill a company with PMF.' },
-      { question: 'Is PMF a one-time event?', answer: 'No. Companies must find PMF repeatedly as they enter new segments or launch new products.' },
-    ],
-    references: [
-      'Andreessen, M. (2007). Product-Market Fit. PMArca.',
-      'Ellis, S. (2017). Hacking Growth. Crown Business.',
-      'Maurya, A. (2012). Running Lean. OReilly Media.',
-      'Croll, A., & Yoskovitz, B. (2013). Lean Analytics. OReilly Media.',
-    ],
-    tags: ['product-market-fit', 'pmf', 'growth', 'traction', 'validation', 'startup-success'],
-    icon: 'Crosshair',
-    difficulty: 'Intermediate',
-    featured: true,
-    popular: true,
-    createdAt: '2025-01-25T00:00:00.000Z',
   },
 
   {
@@ -1224,7 +1181,6 @@ export const entrepreneurshipTerms: Concept[] = [
     popular: true,
     createdAt: '2025-02-01T00:00:00.000Z',
   },
-
 
   {
     id: 'entrepreneurship-32',
@@ -1537,7 +1493,6 @@ export const entrepreneurshipTerms: Concept[] = [
     popular: true,
     createdAt: '2025-02-09T00:00:00.000Z',
   },
-
 
   {
     id: 'entrepreneurship-40',
@@ -1852,4 +1807,4 @@ export const entrepreneurshipTerms: Concept[] = [
     createdAt: '2025-02-17T00:00:00.000Z',
   },
 ]
-
+

@@ -240,7 +240,6 @@ export const sharkTankTerms: Concept[] = [
     createdAt: '2025-01-06T00:00:00.000Z',
   },
 
-
   {
     id: 'sharktank-7',
     slug: 'royalty',
@@ -520,7 +519,6 @@ export const sharkTankTerms: Concept[] = [
     createdAt: '2025-01-13T00:00:00.000Z',
   },
 
-
   {
     id: 'sharktank-14',
     slug: 'landed-cost',
@@ -560,47 +558,6 @@ export const sharkTankTerms: Concept[] = [
     featured: false,
     popular: false,
     createdAt: '2025-01-14T00:00:00.000Z',
-  },
-
-  {
-    id: 'sharktank-15',
-    slug: 'gross-margin',
-    name: 'Gross Margin',
-    category: 'Shark Tank',
-    subcategory: 'Finance',
-    definition: 'Gross margin is the percentage of revenue remaining after deducting the cost of goods sold (COGS). It measures how efficiently a company produces and sells its products. On Shark Tank, gross margin is the single most important number for Kevin OLeary. He looks for gross margins above 50%, ideally 70-80%.',
-    simpleExplanation: 'Gross margin is the profit left after paying for manufacturing, shown as a percentage. Higher margins mean more money for everything else.',
-    example: 'If a product sells for $10 and costs $3 to make, the gross margin is 70%. That $7 per unit covers salaries, marketing, rent, and profit.',
-    whyItMatters: 'High gross margins indicate pricing power, strong brand, or low production costs. Low margins signal commodity competition. Kevin OLeary immediately rejects products with gross margins below 40%.',
-    formula: 'Gross Margin = (Revenue - COGS) / Revenue x 100',
-    formulaDescription: 'Subtract the cost of goods sold from revenue, divide by revenue, and multiply by 100 to get the percentage.',
-    relatedTerms: ['manufacturing-cost', 'landed-cost', 'ebitda', 'profit-margin', 'unit-economics', 'cogs'],
-    interviewQuestions: [
-      'What is a good gross margin for a physical product?',
-      'How can you improve gross margin?',
-      'Why does Kevin OLeary care so much about gross margin?',
-      'What is the difference between gross margin and net margin?',
-      'How do gross margins vary by industry?',
-    ],
-    sharkTankExample: 'Kevin OLeary famously says If you do not have 60% gross margins, I am out. When Scrub Daddy showed 90% gross margins ($0.50 cost, $5.00 retail), Kevin was impressed. High margins were the primary reason that deal succeeded.',
-    realCompanyExample: 'Luxury brands like LVMH have gross margins of 65-70%. Their high margins come from brand pricing power, not low production costs. This allows them to invest heavily in marketing and retail.',
-    faqs: [
-      { question: 'What is a healthy gross margin?', answer: 'Above 50% is good, above 70% is excellent. Retail: 30-50%. SaaS: 70-85%.' },
-      { question: 'How is gross margin different from net margin?', answer: 'Gross margin only subtracts COGS. Net margin subtracts all expenses including operating costs.' },
-      { question: 'Can gross margin be too high?', answer: 'Very high margins (>90%) may indicate pricing too high, limiting market size.' },
-      { question: 'How do you calculate gross margin for a service?', answer: 'COGS for services includes labor costs of delivering the service.' },
-    ],
-    references: [
-      'Shark Tank Blog. (2025). Gross Margin Analysis.',
-      'Harvard Business Review. (2020). The Importance of Gross Margin.',
-      'Croll, A., & Yoskovitz, B. (2013). Lean Analytics. OReilly Media.',
-    ],
-    tags: ['gross-margin', 'profit-margin', 'cogs', 'kevin-oleary', 'unit-economics', 'profitability'],
-    icon: 'Percent',
-    difficulty: 'Beginner',
-    featured: true,
-    popular: true,
-    createdAt: '2025-01-15T00:00:00.000Z',
   },
 
   {
@@ -801,7 +758,6 @@ export const sharkTankTerms: Concept[] = [
     popular: false,
     createdAt: '2025-01-20T00:00:00.000Z',
   },
-
 
   {
     id: 'sharktank-21',
@@ -1082,7 +1038,6 @@ export const sharkTankTerms: Concept[] = [
     createdAt: '2025-01-27T00:00:00.000Z',
   },
 
-
   {
     id: 'sharktank-28',
     slug: 'customer-acquisition-cost',
@@ -1163,47 +1118,6 @@ export const sharkTankTerms: Concept[] = [
     featured: false,
     popular: false,
     createdAt: '2025-01-29T00:00:00.000Z',
-  },
-
-  {
-    id: 'sharktank-30',
-    slug: 'net-promoter-score',
-    name: 'Net Promoter Score (NPS)',
-    category: 'Shark Tank',
-    subcategory: 'Metrics',
-    definition: 'Net Promoter Score (NPS) is a customer loyalty metric based on a single question: How likely are you to recommend our company to a friend or colleague? Scores range from -100 to +100. NPS above 50 is excellent. On Shark Tank, NPS is sometimes mentioned to demonstrate customer satisfaction and word-of-mouth potential.',
-    simpleExplanation: 'NPS measures how likely customers are to recommend your product, on a scale from -100 to +100.',
-    example: 'A company surveys 100 customers: 60 are promoters (9-10), 20 are passives (7-8), 20 are detractors (0-6). NPS = 60% - 20% = 40. This is a good score.',
-    whyItMatters: 'NPS correlates with organic growth. High NPS means customers are your best marketers. Companies with NPS above 50 grow 2x faster than competitors.',
-    formula: 'NPS = % Promoters - % Detractors',
-    formulaDescription: 'Calculate the percentage of customers who rate 9-10 (Promoters) minus those who rate 0-6 (Detractors). Scores 7-8 (Passives) do not count.',
-    relatedTerms: ['repeat-purchase-rate', 'customer-satisfaction', 'retention', 'growth', 'word-of-mouth'],
-    interviewQuestions: [
-      'What is your companys NPS?',
-      'Why is NPS important for growth?',
-      'How do you improve NPS?',
-      'What is a good NPS by industry?',
-      'How does NPS relate to repeat purchase?',
-    ],
-    sharkTankExample: 'While NPS is not always mentioned on Shark Tank, Daymond John often asks Do your customers love you? followed by Do they tell their friends? These questions get at NPS without the formal metric.',
-    realCompanyExample: 'Apple has one of the highest NPS in technology at 72. This means customers actively promote Apple products, creating free word-of-mouth marketing worth billions.',
-    faqs: [
-      { question: 'What is a good NPS?', answer: 'Above 50 is excellent. Above 70 is world-class. Below 0 indicates serious problems.' },
-      { question: 'How often should you measure NPS?', answer: 'Quarterly for established businesses. Monthly for fast-growing startups.' },
-      { question: 'What is the difference between NPS and customer satisfaction?', answer: 'CSAT measures satisfaction with a specific interaction. NPS measures overall brand loyalty.' },
-      { question: 'Can NPS be gamed?', answer: 'Yes, by surveying only happy customers. Always follow standard methodology.' },
-    ],
-    references: [
-      'Reichheld, F. (2006). The Ultimate Question. Harvard Business Review Press.',
-      'Shark Tank Blog. (2025). Customer Loyalty Metrics.',
-      'Satmetrix. (2025). NPS Industry Benchmarks.',
-    ],
-    tags: ['net-promoter-score', 'nps', 'customer-loyalty', 'customer-satisfaction', 'retention', 'growth'],
-    icon: 'ThumbsUp',
-    difficulty: 'Beginner',
-    featured: false,
-    popular: true,
-    createdAt: '2025-01-30T00:00:00.000Z',
   },
 
   {
@@ -1362,85 +1276,6 @@ export const sharkTankTerms: Concept[] = [
     featured: false,
     popular: true,
     createdAt: '2025-02-03T00:00:00.000Z',
-  },
-
-  {
-    id: 'sharktank-35',
-    slug: 'negotiation',
-    name: 'Negotiation',
-    category: 'Shark Tank',
-    subcategory: 'Shark Tank',
-    definition: 'Negotiation is the process by which founders and Sharks discuss and bargain over deal terms, including valuation, equity percentage, royalty rates, and deal structure. On Shark Tank, negotiations are public, high-pressure, and time-constrained. Skilled negotiators get better deals; unprepared founders get exploited.',
-    simpleExplanation: 'Negotiation is the back-and-forth between founders and Sharks to agree on investment terms.',
-    example: 'A founder asks $100,000 for 10% ($1M valuation). Mark Cuban offers $100,000 for 30% ($333K valuation). The founder counters at 15%. They settle at $100,000 for 20% plus a $1 royalty.',
-    whyItMatters: 'Good negotiation can mean the difference between a 10% and 40% equity giveaway. Sharks are expert negotiators. Founders must understand their leverage, BATNA, and walk-away point.',
-    relatedTerms: ['leverage', 'offer', 'counter-offer', 'deal', 'Concept-sheet', 'batna'],
-    interviewQuestions: [
-      'How do you negotiate with investors?',
-      'What is your negotiation strategy?',
-      'What is BATNA in negotiation?',
-      'How do you handle multiple competing offers?',
-      'What are common negotiation mistakes?',
-    ],
-    sharkTankExample: 'The founders of Simply Fit Board asked $50,000 for 10%. Lori Greiner offered $50,000 for 20% plus a 5% royalty. The founder negotiated down to $50,000 for 15% plus 5% royalty. This skilled negotiation saved 5% equity.',
-    realCompanyExample: 'When Apple negotiated with record labels for iTunes, Steve Jobs insisted on $0.99/track pricing. The labels wanted variable pricing. Jobs negotiation created a simple, consumer-friendly model that transformed the music industry.',
-    faqs: [
-      { question: 'What is BATNA?', answer: 'Best Alternative To a Negotiated Agreement. Know your walk-away option before negotiating.' },
-      { question: 'What are the most important negotiation tactics?', answer: 'Know your numbers, understand their motivations, create competition, and be willing to walk away.' },
-      { question: 'How do you negotiate against multiple Sharks?', answer: 'Create a bidding war. Let Sharks compete. Say A Shark has offered X, can you beat that?' },
-      { question: 'What is the biggest negotiation mistake?', answer: 'Accepting the first offer. Sharks expect negotiation and often leave room to improve their terms.' },
-    ],
-    references: [
-      'Fisher, R., & Ury, W. (1981). Getting to Yes. Penguin.',
-      'Shark Tank Blog. (2025). Negotiation Tips from Shark Tank.',
-      'Harvard Business Review. (2019). Negotiation Skills.',
-    ],
-    tags: ['negotiation', 'deal', 'offer', 'counter-offer', 'shark-tank', 'batna'],
-    icon: 'MessageSquare',
-    difficulty: 'Intermediate',
-    featured: false,
-    popular: true,
-    createdAt: '2025-02-04T00:00:00.000Z',
-  },
-
-
-  {
-    id: 'sharktank-36',
-    slug: 'leverage',
-    name: 'Leverage',
-    category: 'Shark Tank',
-    subcategory: 'Shark Tank',
-    definition: 'Leverage in negotiation is the advantage one party has over another based on alternatives, information, timing, or position. On Shark Tank, founders gain leverage when multiple Sharks compete for their deal. Sharks gain leverage when a founder has no alternatives or limited options.',
-    simpleExplanation: 'Leverage is your bargaining power. More Sharks interested = more leverage. Desperate for money = less leverage.',
-    example: 'When three Sharks make competing offers, the founder has significant leverage. They can say Mark offered X, but Lori offered Y with better terms. Can you beat that? This bidding war improves their deal.',
-    whyItMatters: 'Leverage determines who gets better terms. Founders with leverage get higher valuations, lower royalty rates, and more favorable deal structures. Leverage is the single most important factor in negotiation outcomes.',
-    relatedTerms: ['negotiation', 'offer', 'deal', 'batna', 'valuation', 'shark'],
-    interviewQuestions: [
-      'How do you build leverage before a negotiation?',
-      'What destroys leverage in a deal?',
-      'How do you create competition among investors?',
-      'What is the biggest source of leverage for founders?',
-      'How do you maintain leverage during negotiations?',
-    ],
-    sharkTankExample: 'The founders of Ring had enormous leverage because their product was generating buzz. Multiple Sharks competed. Mark Cuban structured the best deal and won. The founder leveraged the competition to get better terms than any single Shark would have offered.',
-    realCompanyExample: 'When Instagram was negotiating with Facebook, they had leverage: other acquirers were interested and Instagram was growing rapidly. Mark Zuckerberg paid $1 billion, a price driven partly by Instagrams leverage.',
-    faqs: [
-      { question: 'What gives founders leverage on Shark Tank?', answer: 'Multiple Shark interest, strong sales, patents, exclusive rights, time to make a deal.' },
-      { question: 'What destroys founder leverage?', answer: 'Desperation, bad numbers, declining sales, or revealing your BATNA is going out of business.' },
-      { question: 'How do Sharks get leverage?', answer: 'By identifying weaknesses in the business, offering conditional deals, or working together.' },
-      { question: 'What is the best way to maintain leverage?', answer: 'Have alternatives. The party with the best alternatives has the most leverage.' },
-    ],
-    references: [
-      'Fisher, R., & Ury, W. (1981). Getting to Yes. Penguin.',
-      'Shark Tank Blog. (2025). Leverage in Shark Tank Negotiations.',
-      'Harvard Business Review. (2019). Leverage in Business Deals.',
-    ],
-    tags: ['leverage', 'negotiation', 'deal', 'batna', 'shark-tank', 'bargaining-power'],
-    icon: 'Scale',
-    difficulty: 'Advanced',
-    featured: false,
-    popular: false,
-    createdAt: '2025-02-05T00:00:00.000Z',
   },
 
   {
@@ -1679,7 +1514,6 @@ export const sharkTankTerms: Concept[] = [
     createdAt: '2025-02-11T00:00:00.000Z',
   },
 
-
   {
     id: 'sharktank-43',
     slug: 'intellectual-property',
@@ -1797,4 +1631,4 @@ export const sharkTankTerms: Concept[] = [
     createdAt: '2025-02-14T00:00:00.000Z',
   },
 ]
-
+

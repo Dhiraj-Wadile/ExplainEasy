@@ -3,73 +3,6 @@ import { Concept } from '@/types'
 export const startupTerms: Concept[] = [
 
   {
-    id: 'startup-1',
-    slug: 'minimum-viable-product',
-    name: 'MVP (Minimum Viable Product)',
-    category: 'Startup',
-    subcategory: 'Product Development',
-    definition:
-      'An MVP is the simplest version of a product that can be released to early customers with enough features to solve a core problem and gather validated learning. It is not a half-baked product but a strategic tool for testing hypotheses with minimal resources. The goal is to maximize learning about customer needs per dollar spent, enabling startups to avoid building products nobody wants.',
-    simpleExplanation:
-      'An MVP is the most basic version of your product that still solves the main problem for customers, so you can test your idea without wasting time and money building the full thing.',
-    example:
-      'When Airbnb first launched, their MVP was a simple website offering air mattresses and breakfast to conference attendees. They had no payment system, no reviews, no search filters - just a basic listing page and the founders manually handling bookings.',
-    whyItMatters:
-      'MVPs prevent startups from spending months or years building features customers do not want. The lean startup methodology centers on the Build-Measure-Learn feedback loop. By releasing an MVP early, founders gather real market data and reduce the risk of building a product that fails on launch.',
-    relatedTerms: ['product-market-fit', 'pivot', 'lean-startup', 'prototype', 'build-measure-learn'],
-    interviewQuestions: [
-      'How do you determine what features to include in an MVP versus what to defer?',
-      'Tell me about a time you launched an MVP and what you learned from it.',
-      'How do you validate whether an MVP is successful?',
-      'What metrics would you track for an MVP in a B2B SaaS product?',
-      'How do you balance speed to market with quality concerns in an MVP?',
-    ],
-    sharkTankExample:
-      'In Shark Tank, many founders present MVPs rather than finished products. The founders of Ring (then called DoorBot) appeared with a working prototype that connected to smartphones. Their MVP was functional but crude compared to the polished product it became. Kevin OLeary initially passed, but the product validated a real need and went on to be acquired by Amazon for over  billion.',
-    realCompanyExample:
-      'Zappos founder Nick Swinmurn started with an MVP that was literally just a website with photos of shoes from local stores. When someone ordered a pair, he would buy them at the store and ship them himself. This validated the demand for online shoe shopping before building any inventory system, leading to a .2 billion acquisition by Amazon.',
-    faqs: [
-      {
-        question: 'What is the difference between an MVP and a prototype?',
-        answer:
-          'A prototype is an early sample used to test a concept, often not functional for end users. An MVP is a functional product released to real customers to validate a business model. Prototypes test feasibility; MVPs test viability.',
-      },
-      {
-        question: 'Can an MVP be just a landing page?',
-        answer:
-          'Yes, a landing page explaining your product with a sign-up form can validate whether people are interested. Buffer, the social media scheduling tool, started with a two-page MVP: a landing page explaining the product and a pricing page that led to a coming soon message.',
-      },
-      {
-        question: 'How long should it take to build an MVP?',
-        answer:
-          'Ideally 2-4 weeks for digital products. If building an MVP takes longer than 3 months, it is probably too complex. The goal is speed of learning, not perfection.',
-      },
-      {
-        question: 'What if my MVP is too ugly and turns customers away?',
-        answer:
-          'Early adopters care more about solving their problem than perfect design. As long as the core functionality works and solves a real pain point, early customers will forgive rough edges. You can polish after validation.',
-      },
-      {
-        question: 'Should I charge money for my MVP?',
-        answer:
-          'Yes, if possible. Asking customers to pay is the strongest form of validation. Free sign-ups indicate interest, but paid transactions indicate true willingness to pay.',
-      },
-    ],
-    references: [
-      'Ries, E. (2011). The Lean Startup. Crown Business.',
-      'Blank, S. (2013). The Four Steps to the Epiphany. K&S Ranch.',
-      'Mastro, J. (2018). How Zappos Started with an MVP. Founder Stories.',
-      'Dropbox. (2007). Dropbox - Demo Video MVP. TechCrunch.',
-    ],
-    tags: ['mvp', 'minimum-viable-product', 'lean-startup', 'product-development', 'validation', 'prototyping'],
-    icon: 'Rocket',
-    difficulty: 'Beginner',
-    featured: true,
-    popular: true,
-    createdAt: '2025-01-10T00:00:00.000Z',
-  },
-
-  {
     id: 'startup-2',
     slug: 'product-market-fit',
     name: 'PMF (Product-Market Fit)',
@@ -130,50 +63,6 @@ export const startupTerms: Concept[] = [
     createdAt: '2025-01-12T00:00:00.000Z',
   },
 
-  {
-    id: 'startup-3',
-    slug: 'pivot',
-    name: 'Pivot',
-    category: 'Startup',
-    subcategory: 'Strategy',
-    definition:
-      'A pivot is a structured course correction to test a new fundamental hypothesis about a product, business model, or growth strategy. Coined by Eric Ries, a pivot is not abandoning the vision but changing one or more elements of the strategy. Common types include zoom-in, zoom-out, customer segment pivot, and technology pivot.',
-    simpleExplanation:
-      'A pivot is when you change your business strategy based on what you learned from customers, without giving up on your overall vision.',
-    example:
-      'Instagram started as Burbn, a location-based check-in app with gaming elements and photo-sharing features. The founders noticed users only used the photo-sharing feature. They pivoted to focus entirely on photos and relaunched as Instagram. Within two months, they had 1 million users.',
-    whyItMatters:
-      'Pivoting is essential because startups operate with extreme uncertainty. Most initial business plans are wrong. Successful startups recognize when their approach is not working and change direction. Twitter also pivoted from a podcasting platform called Odeo.',
-    relatedTerms: ['minimum-viable-product', 'product-market-fit', 'lean-startup', 'iteration', 'persevere'],
-    interviewQuestions: [
-      'Describe a time you led or were part of a pivot. What prompted it and what was the outcome?',
-      'How do you know when it is time to pivot versus when to persevere?',
-      'What metrics would you look at to determine if a pivot is necessary?',
-      'How do you manage team morale during a pivot?',
-      'What is the difference between a pivot and a failure?',
-    ],
-    sharkTankExample:
-      'Many Shark Tank companies have pivoted after their episodes. The Cheese Man appeared as a gourmet cheese delivery service but pivoted into corporate gifting during the pandemic.',
-    realCompanyExample:
-      'YouTube started as a video dating site called Tune In Hook Up. The concept failed. The founders pivoted to a general video sharing platform. PayPal also pivoted multiple times: from cryptography to Palm Pilot payments to web payments.',
-    faqs: [
-      { question: 'How is a pivot different from a failure?', answer: 'A pivot is an intentional strategic change based on validated learning. Failure is running out of resources before finding a working model.' },
-      { question: 'How many times should a startup pivot before giving up?', answer: 'Some successful startups pivoted 3-5 times. The key is having enough runway and clear criteria.' },
-      { question: 'What is the biggest risk of pivoting?', answer: 'Pivoting too early or too often without giving a strategy enough time to work.' },
-      { question: 'Should you tell investors about a pivot?', answer: 'Yes, present it as a strategic decision backed by data.' },
-    ],
-    references: [
-      'Ries, E. (2011). The Lean Startup. Crown Business.',
-      'Blank, S. (2013). The Four Steps to the Epiphany. K&S Ranch.',
-      'Instagram. (2010). From Burbn to Instagram: The Pivot Story. TechCrunch.',
-    ],
-    tags: ['pivot', 'lean-startup', 'strategy', 'iteration', 'product-development', 'startup'],
-    icon: 'GitCompareArrows',
-    difficulty: 'Intermediate',
-    featured: false,
-    popular: true,
-    createdAt: '2025-01-15T00:00:00.000Z',
-  },
   {
     id: 'startup-4',
     slug: 'unicorn',
@@ -560,45 +449,6 @@ export const startupTerms: Concept[] = [
     createdAt: '2025-02-05T00:00:00.000Z',
   },
   {
-    id: 'startup-13',
-    slug: 'series-b',
-    name: 'Series B',
-    category: 'Startup',
-    subcategory: 'Funding & Finance',
-    definition:
-      'Series B is the third stage of startup financing focused on scaling the business to capture market share. The startup has proven product-market fit and is generating meaningful revenue. Rounds typically range from  to  and involve growth-stage VC firms.',
-    simpleExplanation:
-      'Series B funding helps a growing startup scale by expanding into new markets and building sales and marketing.',
-    example:
-      'Peloton raised  Series B in 2015 led by Fidelity with 40,000 bikes sold and + annual revenue.',
-    whyItMatters:
-      'Series B transforms startups from promising young companies into serious businesses preparing for IPO or acquisition.',
-    relatedTerms: ['series-a', 'series-c', 'venture-capital', 'growth-metrics', 'scaling'],
-    interviewQuestions: [
-      'How does investment thesis differ between Series A and B?',
-      'What metrics are most important for Series B?',
-      'How do you manage rapid scaling challenges after Series B?',
-      'What types of investors participate in Series B?',
-    ],
-    realCompanyExample:
-      'Zoom raised  Series B in 2015 led by Emergence Capital with 10M users, funding international expansion leading to  IPO.',
-    faqs: [
-      { question: 'How does Series B differ from Series A?', answer: 'A validates PMF. B validates scalable business model.' },
-      { question: 'Typical Series B valuation?', answer: '5x-20x ARR for SaaS depending on growth rate.' },
-      { question: 'Who leads Series B?', answer: 'Growth-stage firms like Sequoia, Accel, Fidelity, Tiger Global.' },
-    ],
-    references: [
-      'Gompers, P., & Lerner, J. (2004). The Venture Capital Cycle. MIT Press.',
-      'PitchBook. (2025). Series B Valuation Trends.',
-    ],
-    tags: ['series-b', 'growth-stage', 'venture-capital', 'scaling', 'funding'],
-    icon: 'BarChart3',
-    difficulty: 'Intermediate',
-    featured: false,
-    popular: true,
-    createdAt: '2025-02-08T00:00:00.000Z',
-  },
-  {
     id: 'startup-14',
     slug: 'series-c',
     name: 'Series C',
@@ -804,50 +654,6 @@ export const startupTerms: Concept[] = [
     featured: false,
     popular: true,
     createdAt: '2025-02-20T00:00:00.000Z',
-  },
-  {
-    id: 'startup-19',
-    slug: 'exit-strategy',
-    name: 'Exit Strategy',
-    category: 'Startup',
-    subcategory: 'Strategy',
-    definition:
-      'An exit strategy is a planned approach for founders and investors to sell their ownership stake and realize returns. Common exits include IPO, acquisition, merger, management buyout, or private equity sale. For VC-backed startups, exit is the ultimate goal.',
-    simpleExplanation:
-      'An exit strategy is the plan for how founders and investors will eventually sell their shares and make money.',
-    example:
-      'When Facebook acquired Instagram for  in 2012, founders received ~ and investors received ~.',
-    whyItMatters:
-      'Exit strategy determines the entire financial structure. Companies planning IPO optimize for revenue growth; those planning acquisition optimize for strategic value.',
-    relatedTerms: ['ipo', 'acquisition', 'merger', 'liquidity-event', 'venture-capital', 'valuation'],
-    interviewQuestions: [
-      'What exit strategies are available to startup founders?',
-      'How does an exit strategy influence day-to-day decisions?',
-      'What is the difference between strategic and financial acquisition?',
-      'How do you prepare a company for an exit?',
-      'What factors determine whether IPO or acquisition is better?',
-    ],
-    sharkTankExample:
-      'Every Shark Tank deal has an implicit exit strategy. Sharks look for companies that can be acquired or generate cash flow.',
-    realCompanyExample:
-      'YouTube was acquired by Google for .65B in 2006, 18 months after launch. The founders had enormous traffic but no monetization.',
-    faqs: [
-      { question: 'Most common exit for startups?', answer: 'Acquisition (~90% of VC-backed exits).' },
-      { question: 'How long to achieve an exit?', answer: '7-10 years for successful startups.' },
-      { question: 'Can founders exit before the company?', answer: 'Yes, through secondary sales in later rounds.' },
-      { question: 'What is dual-track exit?', answer: 'Simultaneously preparing for IPO while entertaining acquisition offers.' },
-    ],
-    references: [
-      'Feld, B., & Mendelson, J. (2016). Venture Deals. Wiley.',
-      'Hooke, J. (2021). The Exit Strategy Handbook. Wiley.',
-      'CB Insights. (2025). Startup Exit Report.',
-    ],
-    tags: ['exit-strategy', 'liquidity', 'acquisition', 'ipo', 'venture-capital', 'startup'],
-    icon: 'DoorOpen',
-    difficulty: 'Intermediate',
-    featured: false,
-    popular: true,
-    createdAt: '2025-02-22T00:00:00.000Z',
   },
   {
     id: 'startup-20',
@@ -1176,90 +982,6 @@ export const startupTerms: Concept[] = [
     createdAt: '2025-03-12T00:00:00.000Z',
   },
   {
-    id: 'startup-28',
-    slug: 'pitch-deck',
-    name: 'Pitch Deck',
-    category: 'Startup',
-    subcategory: 'Fundraising',
-    definition:
-      'A pitch deck is a short presentation (10-15 slides) used to communicate a business idea, traction, and funding requirements to investors. It is the single most important fundraising document, determining whether investors take a meeting.',
-    simpleExplanation:
-      'A pitch deck is a slideshow that startups use to convince investors to give them money.',
-    example:
-      'Airbnbs early pitch deck from 2008 started with a simple problem slide and went viral online, studied by founders as a model of storytelling.',
-    whyItMatters:
-      'A pitch deck is often the first impression on investors. A great one opens doors; a poor one kills fundraising before it starts.',
-    relatedTerms: ['elevator-pitch', 'Concept-sheet', 'investor', 'fundraising', 'demo-day'],
-    interviewQuestions: [
-      'What are the essential slides in a pitch deck?',
-      'How long should a pitch deck be?',
-      'What is the most common mistake in pitch decks?',
-      'How do you tailor a pitch deck for different audiences?',
-    ],
-    sharkTankExample:
-      'Shark Tank pitches are live pitch decks. Bombas delivered a perfect pitch leading to Daymond Johns investment.',
-    realCompanyExample:
-      'Ubers Series A pitch deck had just 12 slides showing the broken taxi market, solution, and compelling economics, helping raise .',
-    faqs: [
-      { question: 'How many slides?', answer: '10-15 slides, deliverable in 10 minutes.' },
-      { question: 'Include financial projections?', answer: 'High-level only. Detailed models in appendix.' },
-      { question: 'Most important slide?', answer: 'The traction slide. Real metrics beat projections.' },
-      { question: 'Should I send the deck before a meeting?', answer: 'Depends on investor preference. Teaser email first is safe.' },
-    ],
-    references: [
-      'Kawasaki, G. (2015). The Art of the Start 2.0. Portfolio.',
-      'YC Startup School. (2025). How to Build Your Pitch Deck.',
-    ],
-    tags: ['pitch-deck', 'fundraising', 'investor-presentation', 'startup', 'pitching'],
-    icon: 'Presentation',
-    difficulty: 'Intermediate',
-    featured: false,
-    popular: true,
-    createdAt: '2025-03-15T00:00:00.000Z',
-  },
-  {
-    id: 'startup-29',
-    slug: 'elevator-pitch',
-    name: 'Elevator Pitch',
-    category: 'Startup',
-    subcategory: 'Fundraising',
-    definition:
-      'An elevator pitch is a concise, compelling summary of a business idea delivered in 30-60 seconds. It should communicate the problem, solution, differentiation, and ask. Named after the idea of pitching during an elevator ride.',
-    simpleExplanation:
-      'An elevator pitch is a 30-second summary of your business that makes someone want to learn more.',
-    example:
-      'Airbnbs classic pitch: We are like eBay for space. People list extra rooms and travelers book them for a more authentic experience.',
-    whyItMatters:
-      'Founders never know when they will meet a potential investor. A polished elevator pitch ensures you are always ready to make a compelling first impression.',
-    relatedTerms: ['pitch-deck', 'value-proposition', 'elevator-pitch', 'networking'],
-    interviewQuestions: [
-      'Give me your elevator pitch for this company.',
-      'How would you tailor it for an investor versus a customer?',
-      'What is the ideal length?',
-      'How do you practice your elevator pitch?',
-    ],
-    sharkTankExample:
-      'Every Shark Tank episode begins with founders delivering their elevator pitch. Rings pitch hooked investors in 30 seconds.',
-    realCompanyExample:
-      'Dropbox founder: Its a USB drive that lives in the cloud. This simple pitch helped recruit engineers and investors.',
-    faqs: [
-      { question: 'How long should it be?', answer: '30-60 seconds, 75-150 words.' },
-      { question: 'Essential components?', answer: 'Hook, problem, solution, market, differentiation, traction, ask.' },
-      { question: 'Should I memorize it?', answer: 'Yes, but make it sound natural, not scripted.' },
-      { question: 'Biggest mistake?', answer: 'Cramming too much information. Make them curious to ask more.' },
-    ],
-    references: [
-      'Kawasaki, G. (2015). The Art of the Start 2.0. Portfolio.',
-      'YC Startup School. (2025). Pitching 101.',
-    ],
-    tags: ['elevator-pitch', 'pitching', 'networking', 'startup', 'fundraising'],
-    icon: 'MessageSquare',
-    difficulty: 'Beginner',
-    featured: false,
-    popular: true,
-    createdAt: '2025-03-18T00:00:00.000Z',
-  },
-  {
     id: 'startup-30',
     slug: 'Concept-sheet',
     name: 'Concept Sheet',
@@ -1346,49 +1068,6 @@ export const startupTerms: Concept[] = [
     createdAt: '2025-03-22T00:00:00.000Z',
   },
   {
-    id: 'startup-32',
-    slug: 'co-founder',
-    name: 'Co-founder',
-    category: 'Startup',
-    subcategory: 'People & Culture',
-    definition:
-      'A co-founder collaborates with others to establish and build a startup, sharing risk, reward, and responsibilities. Studies show startups with multiple co-founders outperform solo founders. Co-founder conflict is a leading cause of startup failure.',
-    simpleExplanation:
-      'A co-founder is a partner who helps start and build a company, sharing the work, risk, and potential rewards.',
-    example:
-      'Steve Jobs and Steve Wozniak co-founded Apple. Jobs handled business and design, Wozniak built the technology.',
-    whyItMatters:
-      'Choosing a co-founder is like choosing a business spouse. The right one brings complementary skills and shared conviction.',
-    relatedTerms: ['founders-equity', 'vesting', 'startup-team', 'advisors', 'board-of-directors'],
-    interviewQuestions: [
-      'What qualities do you look for in a co-founder?',
-      'How do you handle disagreements between co-founders?',
-      'What happens if a co-founder wants to leave?',
-      'Should co-founders have complementary or overlapping skills?',
-    ],
-    sharkTankExample:
-      'Daymond John invested in Bombas partly because of the strong co-founder relationship.',
-    realCompanyExample:
-      'Warren Buffett and Charlie Mungers 50+ year partnership at Berkshire Hathaway is the greatest co-founder relationship in business.',
-    faqs: [
-      { question: 'How do I find a co-founder?', answer: 'Networking events, meetups, co-founder platforms, hackathons.' },
-      { question: 'Should I give a co-founder equal equity?', answer: 'Common but not required. Reflect contributions and commitment.' },
-      { question: 'Ideal number of co-founders?', answer: '2-3 is the sweet spot.' },
-    ],
-    references: [
-      'Wasserman, N. (2012). The Founders Dilemmas. Princeton University Press.',
-      'Graham, P. (2006). How to Split Equity. PaulGraham.com.',
-      'Hoffman, R. (2018). Blitzscaling. Crown Business.',
-    ],
-    tags: ['co-founder', 'startup-team', 'entrepreneurship', 'partnership', 'founding-team'],
-    icon: 'Users',
-    difficulty: 'Beginner',
-    featured: false,
-    popular: true,
-    createdAt: '2025-03-25T00:00:00.000Z',
-  },
-
-  {
     id: 'startup-33',
     slug: 'advisors',
     name: 'Advisors',
@@ -1426,49 +1105,6 @@ export const startupTerms: Concept[] = [
     featured: false,
     popular: false,
     createdAt: '2025-03-28T00:00:00.000Z',
-  },
-  {
-    id: 'startup-34',
-    slug: 'board-of-directors',
-    name: 'Board of Directors',
-    category: 'Startup',
-    subcategory: 'Governance',
-    definition:
-      'The board of directors oversees company management and makes major decisions on behalf of shareholders. For startups, the board includes founders, investors, and independent directors. It approves strategy, hires/fires CEOs, sets compensation, and oversees compliance.',
-    simpleExplanation:
-      'The board oversees the company, makes big decisions like hiring the CEO, and protects shareholder interests.',
-    example:
-      'A typical startup board after Series A: 2 founders, 2 investors, 1 independent director. Meets quarterly.',
-    whyItMatters:
-      'The board can fire the CEO and control company direction. Founders who lose board control can be removed from their own company.',
-    relatedTerms: ['advisors', 'ceo', 'governance', 'shareholders', 'fiduciary-duty'],
-    interviewQuestions: [
-      'How do you structure a startup board?',
-      'What rights do board members have?',
-      'How do you manage board relationships as a founder?',
-      'What happens if founders lose board control?',
-    ],
-    sharkTankExample:
-      'Mark Cuban takes board seats in portfolio companies and is actively involved in scaling them.',
-    realCompanyExample:
-      'Steve Jobs was fired from Apple in 1985 after losing a boardroom power struggle, showing the immense power of boards.',
-    faqs: [
-      { question: 'How big should a startup board be?', answer: '3-7 members.' },
-      { question: 'Who should be on the board?', answer: 'Founders, lead investors, independent directors with industry expertise.' },
-      { question: 'What is a board observer?', answer: 'Attends meetings and receives materials but has no voting rights.' },
-      { question: 'Can founders be removed by the board?', answer: 'Yes, which is why maintaining board control is critical.' },
-    ],
-    references: [
-      'Feld, B., & Mendelson, J. (2016). Venture Deals. Wiley.',
-      'Horowitz, B. (2014). The Hard Thing About Hard Things. HarperBusiness.',
-      'Wasserman, N. (2012). The Founders Dilemmas. Princeton University Press.',
-    ],
-    tags: ['board-of-directors', 'governance', 'investor-relations', 'startup', 'leadership'],
-    icon: 'Building',
-    difficulty: 'Advanced',
-    featured: false,
-    popular: false,
-    createdAt: '2025-04-01T00:00:00.000Z',
   },
   {
     id: 'startup-35',
