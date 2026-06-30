@@ -1,7 +1,29 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
+
+function useInView(threshold = 0.1): [React.RefObject<HTMLDivElement | null>, boolean] {
+  const ref = useRef<HTMLDivElement | null>(null)
+  const [inView, setInView] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true)
+          observer.unobserve(el)
+        }
+      },
+      { threshold }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [threshold])
+
+  return [ref, inView]
+}
 
 interface MotionWrapperProps {
   children: ReactNode
@@ -10,60 +32,60 @@ interface MotionWrapperProps {
 }
 
 export function FadeInUp({ children, className, delay = 0 }: MotionWrapperProps) {
+  const [ref, inView] = useInView()
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.45, delay, ease: [0.25, 0.1, 0.25, 1] }}
+    <div
+      ref={ref}
       className={className}
+      style={{
+        opacity: inView ? 1 : 0,
+        transform: inView ? 'translateY(0)' : 'translateY(16px)',
+        transition: `opacity 0.45s ease-out ${delay}s, transform 0.45s ease-out ${delay}s`,
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   )
 }
 
 export function FadeIn({ children, className, delay = 0 }: MotionWrapperProps) {
+  const [ref, inView] = useInView()
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay }}
+    <div
+      ref={ref}
       className={className}
+      style={{
+        opacity: inView ? 1 : 0,
+        transition: `opacity 0.4s ease-out ${delay}s`,
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   )
 }
 
 export function StaggerContainer({ children, className }: { children: ReactNode; className?: string }) {
+  const [ref, inView] = useInView()
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-50px' }}
-      variants={{
-        hidden: {},
-        visible: { transition: { staggerChildren: 0.05 } },
-      }}
-      className={className}
-    >
-      {children}
-    </motion.div>
+    <div ref={ref} className={className}>
+      {inView && children}
+    </div>
   )
 }
 
 export function StaggerItem({ children, className }: { children: ReactNode; className?: string }) {
+  const [ref, inView] = useInView()
   return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 12 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] } },
-      }}
+    <div
+      ref={ref}
       className={className}
+      style={{
+        opacity: inView ? 1 : 0,
+        transform: inView ? 'translateY(0)' : 'translateY(12px)',
+        transition: 'opacity 0.4s ease-out, transform 0.4s ease-out',
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   )
 }

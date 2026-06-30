@@ -15,6 +15,8 @@ const nextConfig = {
 
   serverExternalPackages: ['@upstash/redis'],
 
+  productionBrowserSourceMaps: true,
+
   async headers() {
     return [
       {
@@ -24,6 +26,8 @@ const nextConfig = {
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           { key: 'X-XSS-Protection', value: '1; mode=block' },
+          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+          { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
         ],
       },
       {

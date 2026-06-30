@@ -2,7 +2,6 @@
 
 import { useThemeCtx } from '@/components/shared/app-theme'
 import { Sun, Moon } from 'lucide-react'
-import { motion } from 'framer-motion'
 import { useSyncExternalStore } from 'react'
 
 export function ThemeToggle() {
@@ -21,18 +20,20 @@ export function ThemeToggle() {
       className="p-2 rounded-lg hover:bg-white/5 transition-colors"
       aria-label="Toggle theme"
     >
-      <motion.div
+      <div
         key={theme}
-        initial={{ opacity: 0, rotate: -90, scale: 0.5 }}
-        animate={{ opacity: 1, rotate: 0, scale: 1 }}
-        transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+        className="transition-all duration-250"
+        style={{
+          opacity: 1,
+          transform: 'rotate(0deg) scale(1)',
+        }}
       >
         {theme === 'dark' ? (
           <Moon className="w-5 h-5" />
         ) : (
           <Sun className="w-5 h-5" />
         )}
-      </motion.div>
+      </div>
     </button>
   )
 }

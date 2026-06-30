@@ -39,6 +39,7 @@ export function HeroSearch() {
       <input
         type="text"
         placeholder=" "
+        aria-label="Search concepts"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         onFocus={() => setSearchFocused(true)}
@@ -51,7 +52,7 @@ export function HeroSearch() {
         className="w-full h-14 pl-12 pr-4 bg-transparent text-foreground text-base outline-none rounded-2xl"
       />
       {!searchQuery && (
-        <span className="absolute left-12 pointer-events-none text-base truncate max-w-[80%] text-muted-foreground/60">
+        <span className="absolute left-12 pointer-events-none text-base truncate max-w-[80%] text-muted-foreground">
           {searchExamples[exampleIndex]}
         </span>
       )}

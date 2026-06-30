@@ -4,6 +4,15 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { allTerms } from '@/data'
 
+async function safeQuery<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
+  try {
+    return await fn()
+  } catch (err) {
+    console.error('[DASHBOARD] Query failed:', err)
+    return fallback
+  }
+}
+
 export async function GET() {
   const session = await getServerSession(authOptions)
   if (!session?.user?.id) {
@@ -13,36 +22,59 @@ export async function GET() {
   try {
     const totalConcepts = allTerms.length
 
-    const learnedProgress = await prisma.progress.count({
-      where: { userId: session.user.id, completed: true },
-    })
-
-    const bookmarkCount = await prisma.favorite.count({
-      where: { userId: session.user.id },
-    })
-
-    const quizResults = await prisma.quizResult.findMany({
-      where: { userId: session.user.id },
-      orderBy: { completedAt: 'desc' },
-      take: 10,
-    })
-
-    const totalQuizAttempts = await prisma.quizResult.count({
-      where: { userId: session.user.id },
-    })
-
-    const avgScore = quizResults.length > 0
-      ? Math.round(quizResults.reduce((sum, r) => sum + (r.score / r.totalQuestions) * 100, 0) / quizResults.length)
-      : 0
-
-    const recentStreaks = await prisma.learningStreak.findMany({
-      where: { userId: session.user.id },
-      orderBy: { date: 'desc' },
-      take: 30,
-    })
+    const [learnedCount, bookmarkCount, quizResults, totalQuizAttempts, recentStreaks, achievements, recentRaw, interests] =
+      await Promise.all([
+        safeQuery(() => prisma.progress.count({ where: { userId: session.user.id, completed: true } }), 0),
+        safeQuery(() => prisma.favorite.count({ where: { userId: session.user.id } }), 0),
+        safeQuery(
+          () =>
+            prisma.quizResult.findMany({
+              where: { userId: session.user.id },
+              orderBy: { completedAt: 'desc' },
+              take: 10,
+            }),
+          []
+        ),
+        safeQuery(() => prisma.quizResult.count({ where: { userId: session.user.id } }), 0),
+        safeQuery(
+          () =>
+            prisma.learningStreak.findMany({
+              where: { userId: session.user.id },
+              orderBy: { date: 'desc' },
+              take: 30,
+            }),
+          []
+        ),
+        safeQuery(
+          () =>
+            prisma.achievement.findMany({
+              where: { userId: session.user.id },
+              orderBy: { earnedAt: 'desc' },
+            }),
+          []
+        ),
+        safeQuery(
+          () =>
+            prisma.recentlyViewed.findMany({
+              where: { userId: session.user.id },
+              orderBy: { viewedAt: 'desc' },
+              take: 6,
+              select: { conceptId: true },
+            }),
+          []
+        ),
+        safeQuery(
+          () =>
+            prisma.userInterest.findMany({
+              where: { userId: session.user.id },
+              select: { category: true },
+            }),
+          []
+        ),
+      ])
 
     let currentStreak = 0
-    if (recentStreaks.length > 0) {
+    if (Array.isArray(recentStreaks) && recentStreaks.length > 0) {
       const today = new Date()
       today.setHours(0, 0, 0, 0)
       let checkDate = new Date(today)
@@ -60,28 +92,26 @@ export async function GET() {
       }
     }
 
-    const achievements = await prisma.achievement.findMany({
-      where: { userId: session.user.id },
-      orderBy: { earnedAt: 'desc' },
-    })
+    const avgScore =
+      Array.isArray(quizResults) && quizResults.length > 0
+        ? Math.round(
+            quizResults.reduce((sum, r) => sum + (r.score / r.totalQuestions) * 100, 0) / quizResults.length
+          )
+        : 0
 
-    const recentlyViewed = await prisma.recentlyViewed.findMany({
-      where: { userId: session.user.id },
-      orderBy: { viewedAt: 'desc' },
-      take: 6,
-      select: { conceptId: true, viewedAt: true },
-    })
-
-    const interests = await prisma.userInterest.findMany({
-      where: { userId: session.user.id },
-      select: { category: true },
-    })
+    const recentlyViewedSlugs: string[] = []
+    if (Array.isArray(recentRaw)) {
+      for (const r of recentRaw) {
+        const concept = allTerms.find((t) => t.id === r.conceptId)
+        if (concept?.slug) recentlyViewedSlugs.push(concept.slug)
+      }
+    }
 
     return NextResponse.json({
       stats: {
         totalConcepts,
-        learnedConcepts: learnedProgress,
-        progressPercentage: totalConcepts > 0 ? Math.round((learnedProgress / totalConcepts) * 100) : 0,
+        learnedConcepts: learnedCount,
+        progressPercentage: totalConcepts > 0 ? Math.round((learnedCount / totalConcepts) * 100) : 0,
         currentStreak,
         bookmarkCount,
         totalQuizAttempts,
@@ -89,10 +119,11 @@ export async function GET() {
       },
       quizResults,
       achievements,
-      recentlyViewed: recentlyViewed.map((r) => r.conceptId),
-      interests: interests.map((i) => i.category),
+      recentlyViewed: recentlyViewedSlugs,
+      interests: Array.isArray(interests) ? interests.map((i) => i.category) : [],
     })
-  } catch {
+  } catch (err) {
+    console.error('[DASHBOARD] Unexpected error:', err)
     return NextResponse.json({ error: 'Failed to fetch dashboard' }, { status: 500 })
   }
 }

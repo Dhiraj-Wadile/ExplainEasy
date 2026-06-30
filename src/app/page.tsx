@@ -10,7 +10,6 @@ import {
 import { categories } from '@/data/categories'
 import { popularTerms, getDailyTerm, allTerms } from '@/data/index'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { FadeInUp, StaggerContainer, StaggerItem } from '@/components/shared/motion'
 import { getIcon } from '@/lib/icons'
@@ -76,15 +75,17 @@ export default function HomePage() {
 
           <FadeInUp delay={0.25}>
             <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
-              <Link href="/categories">
-                <Button size="lg" className="px-8 h-12 text-base">
-                  Browse Concepts <ArrowRight className="w-4 h-4 ml-1.5" />
-                </Button>
+              <Link
+                href="/categories"
+                className="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 h-12 px-7 text-base gap-2.5 bg-primary text-primary-foreground hover:brightness-110 shadow-lg shadow-primary/20 active:scale-[0.97]"
+              >
+                Browse Concepts <ArrowRight className="w-4 h-4 ml-1.5" />
               </Link>
-              <Link href={`/terms/${dailyTerm.slug}`}>
-                <Button variant="outline" size="lg" className="px-8 h-12 text-base">
-                  Daily Concept
-                </Button>
+              <Link
+                href={`/terms/${dailyTerm.slug}`}
+                className="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 h-12 px-7 text-base gap-2.5 border border-border bg-transparent hover:bg-white/5 hover:border-muted-foreground/30 active:scale-[0.97]"
+              >
+                Daily Concept
               </Link>
             </div>
           </FadeInUp>
@@ -122,10 +123,11 @@ export default function HomePage() {
                   <p className="text-muted-foreground leading-relaxed max-w-xl">
                     {dailyTerm.definition}
                   </p>
-                  <Link href={`/terms/${dailyTerm.slug}`}>
-                    <Button variant="ghost" className="gap-1.5 p-0 h-auto text-primary hover:text-primary/80">
-                      Read full explanation <ChevronRight className="w-4 h-4" />
-                    </Button>
+                  <Link
+                    href={`/terms/${dailyTerm.slug}`}
+                    className="inline-flex items-center gap-1.5 text-primary hover:text-primary/80 rounded-xl font-medium transition-colors text-sm"
+                  >
+                    Read full explanation <ChevronRight className="w-4 h-4" />
                   </Link>
                 </div>
                 <Badge variant="primary" className="text-sm px-4 py-1.5 self-start shrink-0">
@@ -145,10 +147,11 @@ export default function HomePage() {
                 <h2 className="heading-md mb-1">Explore Categories</h2>
                 <p className="text-muted-foreground">Find your area of interest</p>
               </div>
-              <Link href="/categories">
-                <Button variant="ghost" className="gap-1.5">
-                  View All <ChevronRight className="w-4 h-4" />
-                </Button>
+              <Link
+                href="/categories"
+                className="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 h-10 px-5 text-sm gap-2 hover:bg-white/5 text-muted-foreground hover:text-foreground"
+              >
+                View All Categories <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
           </FadeInUp>
@@ -190,11 +193,12 @@ export default function HomePage() {
                   <h2 className="heading-md mb-1">Popular Concepts</h2>
                   <p className="text-muted-foreground">Most viewed business terms</p>
                 </div>
-                <Link href="/search?sort=popular">
-                  <Button variant="ghost" className="gap-1.5">
-                    View All <ChevronRight className="w-4 h-4" />
-                  </Button>
-                </Link>
+              <Link
+                href="/search?sort=popular"
+                className="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 h-10 px-5 text-sm gap-2 hover:bg-white/5 text-muted-foreground hover:text-foreground"
+              >
+                View All Concepts <ChevronRight className="w-4 h-4" />
+              </Link>
               </div>
             </FadeInUp>
 

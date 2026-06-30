@@ -73,7 +73,7 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <script dangerouslySetInnerHTML={{
-          __html: `(function(){try{var t=localStorage.getItem('theme');document.documentElement.classList.toggle('dark',t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme:dark)').matches));document.documentElement.style.colorScheme=document.documentElement.classList.contains('dark')?'dark':'light'}catch(e){}})();(function(){var orig=console.error;console.error=function(){var m=typeof arguments[0]==='string'?arguments[0]:'';if(m.includes('script tag while rendering')||m.includes('hydrated successfully'))return;return orig.apply(console,arguments)}})()`
+          __html: `(function(){try{var t=localStorage.getItem('theme');document.documentElement.classList.toggle('dark',t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme:dark)').matches));document.documentElement.style.colorScheme=document.documentElement.classList.contains('dark')?'dark':'light'}catch(e){}})()`
         }} />
         <AppThemeProvider>
           <SessionProvider>
