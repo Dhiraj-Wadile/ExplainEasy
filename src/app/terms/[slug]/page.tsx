@@ -88,10 +88,7 @@ export default function ConceptPage() {
               <Bookmark className={`h-4 w-4 ${isFavorite(concept.slug) ? 'fill-primary' : ''}`} />
               <span>{isFavorite(concept.slug) ? 'Saved' : 'Save'}</span>
             </button>
-            <button className="flex items-center gap-1.5 hover:text-foreground transition-colors">
-              <Share2 className="h-4 w-4" />
-              <span>Share</span>
-            </button>
+            <ShareButton conceptName={concept.name} conceptSlug={concept.slug} />
           </div>
         </div>
       </div>
@@ -371,5 +368,35 @@ function Section({ title, children }: { title: string; children: React.ReactNode
       <h2 className="text-xl font-semibold mb-4">{title}</h2>
       {children}
     </section>
+  )
+}
+
+function ShareButton({ conceptName, conceptSlug }: { conceptName: string; conceptSlug: string }) {
+  const [copied, setCopied] = useState(false)
+
+  async function handleShare() {
+    const url = `${window.location.origin}/terms/${conceptSlug}`
+    const title = `Learn about ${conceptName}`
+    const text = `Check out "${conceptName}" explained simply on ExplainEasy!`
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text, url })
+        return
+      } catch { /* user cancelled */ }
+    }
+
+    try {
+      await navigator.clipboard.writeText(url)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch { /* clipboard not available */ }
+  }
+
+  return (
+    <button onClick={handleShare} className="flex items-center gap-1.5 hover:text-foreground transition-colors text-muted-foreground">
+      {copied ? <CheckCircle className="h-4 w-4 text-primary" /> : <Share2 className="h-4 w-4" />}
+      <span>{copied ? 'Copied!' : 'Share'}</span>
+    </button>
   )
 }
