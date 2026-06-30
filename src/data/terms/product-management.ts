@@ -576,47 +576,6 @@ export const productManagementTerms: Concept[] = [
     createdAt: '2025-03-20'
   },
   {
-    id: 'product-15',
-    slug: 'a-b-testing',
-    name: 'A/B Testing',
-    category: 'Product Management',
-    subcategory: 'Product Analytics',
-    definition: 'A/B testing (also called split testing) is a controlled experiment where two versions of a product element are shown to users at random to determine which performs better on a specific metric. Version A is the control (current), and Version B is the variant (change). Statistical analysis determines whether the difference is significant. A/B testing enables data-driven decisions about design, content, and features.',
-    simpleExplanation: 'A/B testing is showing half your users version A and half version B to see which one gets better results.',
-    example: 'An e-commerce site tests two checkout button colors: green (A) and blue (B). After 10,000 visitors, green converts at 5.2% and blue at 6.8%. The difference is statistically significant, so the team permanently switches to blue.',
-    whyItMatters: 'A/B testing eliminates guesswork and personal opinions from product decisions. Companies like Amazon, Netflix, and Google make thousands of A/B tests annually, each driving measurable improvements in metrics.',
-    relatedTerms: ['split-testing', 'product-analytics', 'funnel-analysis', 'conversion-optimization'],
-    interviewQuestions: [
-      'How do you design a valid A/B test?',
-      'How do you determine sample size?',
-      'What is statistical significance and why does it matter?',
-      'How do you prioritize what to test?',
-      'How do you handle inconclusive test results?'
-    ],
-    sharkTankExample: 'Founders who say "we A/B tested our pricing page and found the winning version increased conversions 20%" demonstrate data-driven decision making.',
-    realCompanyExample: 'Netflix is famous for A/B testing everything. They tested different artwork for shows, different descriptions, and even different preview video clips. This data-driven approach drives their 93% retention rate.',
-    faqs: [
-      { question: 'What is a valid A/B test?', answer: 'Random assignment, large enough sample size, one variable changed, and statistical significance achieved.' },
-      { question: 'How long should an A/B test run?', answer: 'Until reaching statistical significance, typically 1-4 weeks depending on traffic volume.' },
-      { question: 'What is statistical significance?', answer: 'The probability that the observed difference is real and not due to chance. 95% confidence is standard.' },
-      { question: 'What is the difference between A/B and multivariate testing?', answer: 'A/B tests one variable. Multivariate tests multiple variables simultaneously to find optimal combinations.' },
-      { question: 'Can you A/B test too much?', answer: 'Yes. Testing too many things simultaneously or running too many tests can slow down decision-making and confuse results.' }
-    ],
-    references: [
-      'Kohavi, R. - "A/B Testing: The Complete Guide"',
-      'Optimizely - "A/B Testing Guide"',
-      'Google Optimize - "A/B Testing Best Practices"',
-      'ConversionXL - "Statistical Significance in A/B Testing"',
-      'Harvard Business Review - "The Science of A/B Testing"'
-    ],
-    tags: ['A/B testing', 'split testing', 'experimentation', 'optimization', 'analytics'],
-    icon: 'SplitSquareHorizontal',
-    difficulty: 'Intermediate',
-    popular: true,
-    featured: true,
-    createdAt: '2025-03-25'
-  },
-  {
     id: 'product-16',
     slug: 'split-testing',
     name: 'Split Testing',

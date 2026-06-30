@@ -15,6 +15,7 @@ import { techTerms } from './terms/technology'
 import { howThingsWorkTerms } from './terms/how-things-work'
 import { caseStudyTerms } from './terms/case-studies'
 import { newConcepts } from './terms/new-concepts'
+import { slingBusinessTerms } from './terms/sling-business-terms'
 
 export const allTerms: Concept[] = [
   ...aiTerms,
@@ -33,6 +34,7 @@ export const allTerms: Concept[] = [
   ...caseStudyTerms,
   ...negotiationTerms,
   ...newConcepts,
+  ...slingBusinessTerms,
 ]
 
 export const popularTerms = allTerms.filter((t) => t.popular)
@@ -102,4 +104,5 @@ export {
   caseStudyTerms,
   negotiationTerms,
   newConcepts,
+  slingBusinessTerms,
 }

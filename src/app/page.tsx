@@ -8,7 +8,7 @@ import {
   Zap,
 } from 'lucide-react'
 import { categories } from '@/data/categories'
-import { popularTerms, getDailyTerm, allTerms } from '@/data/index'
+import { popularTerms, getDailyTerm, allTerms, getTermCountForCategory } from '@/data/index'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import { FadeInUp, StaggerContainer, StaggerItem } from '@/components/shared/motion'
@@ -173,7 +173,7 @@ export default function HomePage() {
                         </p>
                       </div>
                       <span className="text-xs text-primary font-medium tabular-nums">
-                        {category.termCount} concepts
+                        {getTermCountForCategory(category.name)} concepts
                       </span>
                     </Card>
                   </Link>

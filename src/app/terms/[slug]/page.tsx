@@ -13,6 +13,7 @@ import { useEffect } from 'react'
 import { MarkLearned } from '@/components/learn/mark-learned'
 import { ReadingProgress } from '@/components/learn/reading-progress'
 import { QuizSection } from '@/components/quiz/quiz-section'
+import { TextToSpeech } from '@/components/shared/text-to-speech'
 import { useChatContext } from '@/lib/store'
 
 export default function ConceptPage() {
@@ -78,6 +79,7 @@ export default function ConceptPage() {
               <Clock className="h-4 w-4" />
               <span>{readTime} min read</span>
             </div>
+            <TextToSpeech text={concept.definition + '. ' + concept.simpleExplanation + '. ' + concept.example} label="Listen" />
             <MarkLearned conceptSlug={concept.slug} />
             <button
               onClick={() => isFavorite(concept.slug) ? removeFavorite(concept.slug) : addFavorite(concept.slug)}
