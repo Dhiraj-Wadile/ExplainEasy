@@ -122,8 +122,7 @@ const caseStudies = [
   },
 ]
 
-const businessConcepts = allTerms.filter(t => t.category === 'Business Basics').slice(0, 10)
-const techConcepts = allTerms.filter(t => t.category === 'Tech Explained' || t.category === 'AI Explained').slice(0, 10)
+const techConcepts = allTerms.filter(t => t.category === 'Tech Explained' || t.category === 'AI Explained' || t.category === 'Technology').slice(0, 10)
 const financeConcepts = allTerms.filter(t => t.category === 'Finance').slice(0, 10)
 const startupConcepts = allTerms.filter(t => t.category === 'Startup' || t.category === 'Entrepreneurship').slice(0, 10)
 
@@ -137,24 +136,46 @@ function getRandomItem<T>(arr: T[]): T | undefined {
   return arr[Math.floor(Math.random() * arr.length)]
 }
 
+function getBaseUrl(): string {
+  return process.env.NEXT_PUBLIC_APP_URL || 'https://explaineasy.vercel.app'
+}
+
 function buildEmailWrapper(content: string): string {
+  const baseUrl = getBaseUrl()
   return `<!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<style>
+  @media only screen and (max-width:560px){
+    .container{width:100%!important;max-width:100%!important}
+    .content{padding:24px 16px!important}
+    .header{padding:28px 16px 20px!important}
+    .footer{padding:16px!important}
+    .btn{padding:12px 24px!important;font-size:14px!important}
+  }
+</style>
+</head>
 <body style="margin:0;padding:0;background:#05080F;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#05080F;padding:30px 10px"><tr><td align="center">
-<table width="540" cellpadding="0" cellspacing="0" style="background:#0F1322;border-radius:24px;border:1px solid rgba(124,108,242,0.1);overflow:hidden">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#05080F;padding:20px 10px;background-image:radial-gradient(circle at 50% 0,rgba(124,108,242,0.08) 0,transparent 70%)"><tr><td align="center">
+<table width="560" cellpadding="0" cellspacing="0" class="container" style="background:#0F1322;border-radius:20px;border:1px solid rgba(124,108,242,0.12);overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3)">
+<tr><td style="background:linear-gradient(135deg,#1a1040 0%,#0F1322 100%);padding:20px 32px;text-align:center;border-bottom:1px solid rgba(124,108,242,0.06)">
+  <a href="${baseUrl}" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px">
+    <div style="width:28px;height:28px;border-radius:6px;background:#7C6CF2;display:flex;align-items:center;justify-content:center">
+      <span style="font-size:16px;color:#fff;font-weight:700">E</span>
+    </div>
+    <span style="font-size:15px;font-weight:700;color:#F8FAFC">explain<span style="color:#7C6CF2">easy</span></span>
+  </a>
+</td></tr>
 ${content}
-<tr><td style="padding:20px 32px;border-top:1px solid rgba(124,108,242,0.06);text-align:center;background:rgba(0,0,0,0.15)">
-<p style="margin:0 0 6px;font-size:11px;color:#475569">You're receiving this because you subscribed to ExplainEasy daily learning.</p>
-<p style="margin:0 0 10px;font-size:11px;color:#475569">
-<a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://explaineasy.com'}" style="color:#7C6CF2;text-decoration:none">ExplainEasy</a>
-&nbsp;&middot;&nbsp;
-<a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://explaineasy.com'}/categories" style="color:#7C6CF2;text-decoration:none">Browse Concepts</a>
-&nbsp;&middot;&nbsp;
-<a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://explaineasy.com'}/unsubscribe" style="color:#7C6CF2;text-decoration:none">Unsubscribe</a>
-</p>
-<p style="margin:0;font-size:10px;color:#333">${new Date().getFullYear()} ExplainEasy. All rights reserved.</p>
+<tr><td style="padding:24px 32px;border-top:1px solid rgba(124,108,242,0.06);text-align:center;background:rgba(0,0,0,0.15)" class="footer">
+<p style="margin:0 0 12px;font-size:12px;color:#475569;line-height:1.6">You are receiving this because you subscribed to ExplainEasy daily learning.<br>Learn one concept every day and master business, finance, tech, and more.</p>
+<table cellpadding="0" cellspacing="0" style="margin:0 auto 12px"><tr>
+<td style="padding:0 8px"><a href="${baseUrl}" style="color:#7C6CF2;font-size:12px;text-decoration:none">Home</a></td>
+<td style="padding:0 8px"><a href="${baseUrl}/categories" style="color:#7C6CF2;font-size:12px;text-decoration:none">Concepts</a></td>
+<td style="padding:0 8px"><a href="${baseUrl}/roadmaps" style="color:#7C6CF2;font-size:12px;text-decoration:none">Roadmaps</a></td>
+<td style="padding:0 8px"><a href="https://explaineasy.vercel.app/unsubscribe" style="color:#7C6CF2;font-size:12px;text-decoration:none">Unsubscribe</a></td>
+</tr></table>
+<p style="margin:0;font-size:11px;color:#333">&copy; ${new Date().getFullYear()} ExplainEasy. Learn smarter, not harder.</p>
 </td></tr>
 </table>
 </td></tr></table>
@@ -345,7 +366,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://explaineasy.com'
+    const baseUrl = getBaseUrl()
     const contentType = getContentType()
     const transporter = await getTransporter()
 

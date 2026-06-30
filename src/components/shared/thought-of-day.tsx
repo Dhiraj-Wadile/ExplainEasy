@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { Quote, RefreshCw, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { BusinessQuote } from '@/types'
@@ -18,13 +18,36 @@ export function ThoughtOfDay({ initialQuote, quotesPool }: ThoughtOfDayProps) {
   const [thoughts, setThoughts] = useState<Thought[]>([{ ...initialQuote, isAiGenerated: false }])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
-  const [poolIndex] = useState(() => Math.floor(Math.random() * quotesPool.length))
-  const poolIndexRef = useRef(poolIndex)
+  const poolIndexRef = useRef(Math.floor(Math.random() * quotesPool.length))
+  const preFetchQueue = useRef<Thought[]>([])
+
+  useEffect(() => {
+    preFetchThoughts()
+  }, [])
+
+  async function preFetchThoughts() {
+    try {
+      const res = await fetch('/api/ai/thought', { method: 'POST' })
+      if (res.ok) {
+        const data = await res.json()
+        if (data.text && data.author) {
+          preFetchQueue.current.push({
+            id: `ai-${Date.now()}`,
+            text: data.text,
+            author: data.author,
+            role: data.role || '',
+            company: data.company || '',
+            isAiGenerated: true,
+          })
+        }
+      }
+    } catch { /* offline fallback */ }
+  }
 
   const currentThought = thoughts[currentIndex]
 
   const addThought = useCallback((thought: Thought) => {
-    setThoughts(prev => [...prev, thought].slice(-50))
+    setThoughts(prev => [...prev, thought].slice(-20))
     setCurrentIndex(prev => prev + 1)
   }, [])
 
@@ -37,6 +60,13 @@ export function ThoughtOfDay({ initialQuote, quotesPool }: ThoughtOfDayProps) {
     const nextPoolIdx = (poolIndexRef.current + 1) % quotesPool.length
     poolIndexRef.current = nextPoolIdx
     const localQuote = quotesPool[nextPoolIdx]
+
+    if (preFetchQueue.current.length > 0) {
+      const aiThought = preFetchQueue.current.shift()!
+      addThought(aiThought)
+      preFetchThoughts()
+      return
+    }
 
     if (localQuote) {
       addThought({ ...localQuote, isAiGenerated: false })
@@ -66,7 +96,7 @@ export function ThoughtOfDay({ initialQuote, quotesPool }: ThoughtOfDayProps) {
         }
       }
     } catch {
-      // local quote already shown, silence error
+      // local quote already shown
     } finally {
       setIsLoading(false)
     }

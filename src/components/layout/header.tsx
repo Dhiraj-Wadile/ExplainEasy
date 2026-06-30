@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { Menu, X, Lightbulb, LogIn } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { ThemeToggle } from './theme-toggle'
+import { LanguageToggle } from '@/components/shared/language-toggle'
 import { cn } from '@/lib/utils'
 
 function NavLink({ href, label, pathname, onClick }: { href: string; label: string; pathname: string; onClick?: () => void }) {
@@ -61,6 +62,7 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-1">
+          <LanguageToggle />
           <ThemeToggle />
           {session ? (
             <Link
